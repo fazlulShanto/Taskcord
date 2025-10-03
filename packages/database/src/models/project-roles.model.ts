@@ -18,7 +18,7 @@ export const projectRolesModel = pgTable(
   },
   (table) => ({
     primary: primaryKey(table.projectId, table.userId, table.roleId),
-  })
+  }),
 );
 
 export type DbProjectRole = typeof projectRolesModel.$inferSelect;
@@ -52,7 +52,7 @@ export class ProjectRolesDal {
   static async removeRole(
     projectId: string,
     userId: string,
-    roleId: string
+    roleId: string,
   ): Promise<DbProjectRole> {
     const [removedRole] = await db
       .delete(projectRolesModel)
@@ -60,8 +60,8 @@ export class ProjectRolesDal {
         and(
           eq(projectRolesModel.projectId, projectId),
           eq(projectRolesModel.userId, userId),
-          eq(projectRolesModel.roleId, roleId)
-        )
+          eq(projectRolesModel.roleId, roleId),
+        ),
       )
       .returning();
 

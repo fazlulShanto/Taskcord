@@ -51,7 +51,7 @@ export class LabelDal {
 
   static async updateLabel(
     id: string,
-    data: Partial<DbNewLabel>
+    data: Partial<DbNewLabel>,
   ): Promise<DbLabel> {
     const [label] = await db
       .update(labelModel)

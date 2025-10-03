@@ -82,7 +82,7 @@ export class ProjectDal {
    */
   static async updateProject(
     id: string,
-    data: Partial<DbNewProject>
+    data: Partial<DbNewProject>,
   ): Promise<DbProject> {
     const [updatedProject] = await db
       .update(projectModel)
@@ -98,7 +98,7 @@ export class ProjectDal {
    */
   static async updateProjectStatus(
     id: string,
-    status: string
+    status: string,
   ): Promise<DbProject> {
     const [updatedProject] = await db
       .update(projectModel)

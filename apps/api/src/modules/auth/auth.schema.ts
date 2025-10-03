@@ -31,5 +31,5 @@ export const { schemas: authSchemas, $ref: authSchemaRef } = buildJsonSchemas(
     ...DiscordAuthCallbackSchema.response,
     authInitQueryParams: DiscordAuthInitRequestSchema.request,
   } as const,
-  { $id: "authSchema" }
+  { $id: "authSchema" },
 );

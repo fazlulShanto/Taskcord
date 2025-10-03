@@ -9,7 +9,7 @@ import {
 export default class ProjectService {
   public async createProject(
     userDiscordId: string,
-    projectData: DbNewProject
+    projectData: DbNewProject,
   ): Promise<DbProject> {
     // Get the user's UUID from their Discord ID
     const user = await UserDal.getUserByDiscordId(userDiscordId);
@@ -54,7 +54,7 @@ export default class ProjectService {
 
   public async updateProject(
     id: string,
-    projectData: Partial<DbNewProject>
+    projectData: Partial<DbNewProject>,
   ): Promise<DbProject | null> {
     // Convert date strings to Date objects if they exist
     const processedData: Partial<DbNewProject> = {
@@ -67,7 +67,7 @@ export default class ProjectService {
 
     if (projectData.estimatedCompletionTimestamp) {
       processedData.estimatedCompletionTimestamp = new Date(
-        projectData.estimatedCompletionTimestamp
+        projectData.estimatedCompletionTimestamp,
       );
     }
 

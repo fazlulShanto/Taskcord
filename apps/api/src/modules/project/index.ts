@@ -5,5 +5,5 @@ import ProjectRoute from "./project.route";
 export default fastifyPlugin(
   async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
     await fastify.register(ProjectRoute, options);
-  }
+  },
 );

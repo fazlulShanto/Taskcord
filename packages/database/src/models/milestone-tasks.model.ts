@@ -14,7 +14,7 @@ export const milestoneTasksModel = pgTable(
   },
   (table) => ({
     primary: primaryKey(table.milestoneId, table.taskId),
-  })
+  }),
 );
 
 export type DbMilestoneTask = typeof milestoneTasksModel.$inferSelect;
@@ -26,7 +26,7 @@ import { db } from "../index";
 
 export class MilestoneTasksDal {
   static async addTaskToMilestone(
-    input: DbNewMilestoneTask
+    input: DbNewMilestoneTask,
   ): Promise<DbMilestoneTask> {
     const [milestoneTask] = await db
       .insert(milestoneTasksModel)
@@ -37,7 +37,7 @@ export class MilestoneTasksDal {
   }
 
   static async getMilestoneTasks(
-    milestoneId: string
+    milestoneId: string,
   ): Promise<DbMilestoneTask[]> {
     return await db
       .select()
@@ -47,15 +47,15 @@ export class MilestoneTasksDal {
 
   static async removeTaskFromMilestone(
     milestoneId: string,
-    taskId: string
+    taskId: string,
   ): Promise<DbMilestoneTask> {
     const [removedTask] = await db
       .delete(milestoneTasksModel)
       .where(
         and(
           eq(milestoneTasksModel.milestoneId, milestoneId),
-          eq(milestoneTasksModel.taskId, taskId)
-        )
+          eq(milestoneTasksModel.taskId, taskId),
+        ),
       )
       .returning();
 

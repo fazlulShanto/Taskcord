@@ -27,7 +27,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    labelController.createLabel.bind(labelController)
+    labelController.createLabel.bind(labelController),
   );
 
   // Get all task labels of a project
@@ -44,7 +44,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    labelController.getAllProjectLabels.bind(labelController)
+    labelController.getAllProjectLabels.bind(labelController),
   );
 
   // Update a task label
@@ -63,7 +63,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    labelController.updateLabel.bind(labelController)
+    labelController.updateLabel.bind(labelController),
   );
 
   // Delete a task label
@@ -81,6 +81,6 @@ export default function LabelsRoute(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    labelController.deleteLabel.bind(labelController)
+    labelController.deleteLabel.bind(labelController),
   );
 }

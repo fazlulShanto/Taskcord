@@ -5,5 +5,5 @@ import LabelRoute from "./label.route";
 export default fastifyPlugin(
   async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
     await fastify.register(LabelRoute, options);
-  }
+  },
 );

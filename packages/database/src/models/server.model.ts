@@ -57,7 +57,7 @@ export class ServerDal {
 
   static async updateServer(
     id: string,
-    data: Partial<DbNewServer>
+    data: Partial<DbNewServer>,
   ): Promise<DbServer> {
     const [updatedServer] = await db
       .update(serverModel)

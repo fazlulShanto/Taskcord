@@ -15,7 +15,7 @@ export default class StatusService {
 
   public async updateStatus(
     id: string,
-    data: Partial<DbNewStatus>
+    data: Partial<DbNewStatus>,
   ): Promise<DbStatus | null> {
     return StatusDal.updateStatus(id, data);
   }

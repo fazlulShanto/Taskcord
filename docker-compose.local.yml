@@ -58,19 +58,25 @@ services:
       - redis
 
   # # Discord Bot Service
-  # discord-bot:
-  #   container_name: discord-bot
-  #   build:
-  #     context: .
-  #     dockerfile: ./Dockerfile.dbot
-  #   restart: unless-stopped
-  #   volumes:
-  #     - .:/app
-  #     - /app/node_modules
-  #   env_file:
-  #     - ./apps/discord-bot/.env
-  #   depends_on:
-  #     - postgres
+  discord-bot:
+    container_name: discord-bot
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dbot
+      target: builder
+    # restart: on-failure
+    command: ["pnpm", "--filter", "bot", "dev"]  # Override CMD to run dev mode
+    volumes:
+      - ./apps/discord-bot:/app/apps/discord-bot  # Mount only discord bot source for hot reload
+      - ./packages:/app/packages  # Mount packages for monorepo deps
+      - /app/node_modules  # Prevent overwriting node_modules
+    env_file:
+      - ./.env.local
+    environment:
+      - PG_DB_URL_LOCAL=postgresql://postgres:postgres@db:5432/taskcord
+    depends_on:
+      - db
+      - redis
 
 volumes:
   postgres_data:

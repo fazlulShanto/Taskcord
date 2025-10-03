@@ -21,7 +21,7 @@ export default class AuthService {
     url.searchParams.set("response_type", "code");
     url.searchParams.set(
       "redirect_uri",
-      apiBaseUrl + process.env.DISCORD_OAUTH_REDIRECT_URL!
+      apiBaseUrl + process.env.DISCORD_OAUTH_REDIRECT_URL!,
     );
     url.searchParams.set("scope", `${process.env.DISCORD_OAUTH_SCOPES}`);
     url.searchParams.set("state", state);
@@ -29,7 +29,7 @@ export default class AuthService {
   }
 
   public async exchangeCodeForAccessToken(
-    code: string
+    code: string,
   ): Promise<DiscordExchangeCodeResponse> {
     const apiBaseUrl = GlobalUtils.getApiHostUrl();
     const API_ENDPOINT = `https://discord.com/api/v10/oauth2/token`;
@@ -37,7 +37,7 @@ export default class AuthService {
     const CLIENT_SECRET = process.env.DISCORD_AUTH_CLIENT_SECRET!;
 
     const basicAuth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
-      "base64"
+      "base64",
     );
     const requestData = {
       grant_type: "authorization_code",
@@ -73,7 +73,7 @@ export default class AuthService {
     const CLIENT_SECRET = process.env.DISCORD_AUTH_CLIENT_SECRET!;
 
     const basicAuth = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
-      "base64"
+      "base64",
     );
 
     const requestData = {
@@ -101,7 +101,7 @@ export default class AuthService {
 
   public async handleDiscordLogin(
     discordUser: DiscordUserInfoResponse,
-    tokenResponse: DiscordExchangeCodeResponse
+    tokenResponse: DiscordExchangeCodeResponse,
   ) {
     let existingUser = await UserDal.getUserByDiscordId(discordUser.id);
 
@@ -112,7 +112,7 @@ export default class AuthService {
       discordRefreshToken: tokenResponse.refresh_token,
       discordAccessToken: tokenResponse.access_token,
       discordAccessTokenExpiresAt: new Date(
-        Date.now() + tokenResponse.expires_in * 1000
+        Date.now() + tokenResponse.expires_in * 1000,
       ),
       lastAuth: new Date(),
       email: discordUser.email,
@@ -125,7 +125,7 @@ export default class AuthService {
       // update user
       existingUser = await UserDal.updateUserByDiscordId(
         existingUser.discordId,
-        updatedUser
+        updatedUser,
       );
     }
     return existingUser;
@@ -144,7 +144,7 @@ export default class AuthService {
       discordRefreshToken: newTokenResponse.refresh_token,
       discordAccessToken: newTokenResponse.access_token,
       discordAccessTokenExpiresAt: new Date(
-        Date.now() + newTokenResponse.expires_in * 1000
+        Date.now() + newTokenResponse.expires_in * 1000,
       ),
     });
     return user;

@@ -16,34 +16,34 @@ apps/
 
 ### API
 
--   RESTful endpoints for task management
--   OpenAPI/Swagger documentation at `/api/docs`
--   Health check and server monitoring endpoints
--   Built with Fastify for high performance
+- RESTful endpoints for task management
+- OpenAPI/Swagger documentation at `/api/docs`
+- Health check and server monitoring endpoints
+- Built with Fastify for high performance
 
 ### Discord Bot
 
--   Slash command support
--   Server information commands
--   Administrative commands
--   Built with discord.js
+- Slash command support
+- Server information commands
+- Administrative commands
+- Built with discord.js
 
 ## 🛠️ Tech Stack
 
--   **Language:** TypeScript
--   **API Framework:** Fastify
--   **Discord Framework:** discord.js
--   **Package Manager:** pnpm (workspace)
--   **Documentation:** OpenAPI/Swagger
--   **Linting:** ESLint
--   **Building:** tsup
+- **Language:** TypeScript
+- **API Framework:** Fastify
+- **Discord Framework:** discord.js
+- **Package Manager:** pnpm (workspace)
+- **Documentation:** OpenAPI/Swagger
+- **Linting:** ESLint
+- **Building:** tsup
 
 ## 🏗️ Development
 
 ### Prerequisites
 
--   Node.js 18+
--   pnpm
+- Node.js 18+
+- pnpm
 
 ### Setup
 
@@ -95,16 +95,16 @@ pnpm --filter bot build
 
 ### API
 
--   `PORT` - Server port (default: 5001)
--   `NODE_ENV` - Environment (prod/staging/local)
--   `DATABASE_URL` - Database connection string
--   `REDIS_URL` - Redis connection string
+- `PORT` - Server port (default: 5001)
+- `NODE_ENV` - Environment (prod/staging/local)
+- `DATABASE_URL` - Database connection string
+- `REDIS_URL` - Redis connection string
 
 ### Discord Bot
 
--   `DISCORD_BOT_TOKEN` - Discord bot token
--   `DISCORD_CLIENT_ID` - Discord application client ID
--   `DISCORD_SHOULD_REGISTER_COMMANDS` - Whether to register slash commands
+- `DISCORD_BOT_TOKEN` - Discord bot token
+- `DISCORD_CLIENT_ID` - Discord application client ID
+- `DISCORD_SHOULD_REGISTER_COMMANDS` - Whether to register slash commands
 
 ## 📚 Documentation
 

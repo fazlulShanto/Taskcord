@@ -9,7 +9,7 @@ import {
 
 export class TaskAssigneesDal {
   static async assignUserToTask(
-    input: DbNewTaskAssignee
+    input: DbNewTaskAssignee,
   ): Promise<DbTaskAssignee> {
     const [taskAssignee] = await db
       .insert(taskAssigneesModel)
@@ -35,15 +35,15 @@ export class TaskAssigneesDal {
 
   static async removeUserFromTask(
     taskId: string,
-    userId: string
+    userId: string,
   ): Promise<DbTaskAssignee> {
     const [removedAssignee] = await db
       .delete(taskAssigneesModel)
       .where(
         and(
           eq(taskAssigneesModel.taskId, taskId),
-          eq(taskAssigneesModel.userId, userId)
-        )
+          eq(taskAssigneesModel.userId, userId),
+        ),
       )
       .returning();
 

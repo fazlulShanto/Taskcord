@@ -53,7 +53,7 @@ export class MilestoneDal {
 
   static async updateMilestone(
     id: string,
-    data: Partial<DbNewMilestone>
+    data: Partial<DbNewMilestone>,
   ): Promise<DbMilestone> {
     const [updatedMilestone] = await db
       .update(milestoneModel)

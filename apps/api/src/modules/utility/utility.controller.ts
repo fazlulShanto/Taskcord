@@ -10,7 +10,7 @@ export default class UtilityController {
 
   public async getApiUptimeHandler(
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     try {
       const uptime = this.utilityService.getApiUptime();
@@ -28,7 +28,7 @@ export default class UtilityController {
 
   public async getApiStatusHandler(
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     try {
       const status = this.utilityService.getApiStatus();
@@ -40,7 +40,7 @@ export default class UtilityController {
 
   public async getServerHardwareInfoHandler(
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const info = this.utilityService.getServerHardwareInfo();
 

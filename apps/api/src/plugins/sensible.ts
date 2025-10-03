@@ -8,5 +8,5 @@ import type { FastifyInstance } from "fastify";
  * @see https://github.com/fastify/fastify-sensible
  */
 export default fastifyPlugin(async (fastify: FastifyInstance) => {
-    await fastify.register(fastifySensible);
+  await fastify.register(fastifySensible);
 });

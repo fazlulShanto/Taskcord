@@ -1,23 +1,39 @@
-# apps/discord-bot/Dockerfile
-FROM node:22-alpine
 
+FROM node:22-alpine AS builder
 WORKDIR /app
 
+# Install pnpm globally
 RUN npm install -g pnpm
 
-# --- Step 1: Install Dependencies (Cached) ---
+# Copy lockfiles and package.json files first for better layer caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/
 COPY apps/dashboard-client/package.json ./apps/dashboard-client/
 COPY apps/discord-bot/package.json ./apps/discord-bot/
-COPY packages/*/package.json ./packages/*/
+COPY packages/ ./packages/
 
-RUN pnpm install --no-frozen-lockfile
+# Use BuildKit cache mount for pnpm store to speed up repeated installs
+# Note: We don't mount node_modules as cache because turbo needs it for the build step
+RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
+  pnpm install --frozen-lockfile
 
-# --- Step 2: Copy Source Code ---
-# The bot might need the database package to interact with the DB
-COPY apps/discord-bot/ ./apps/discord-bot/
-COPY packages/database/ ./packages/database/
+# Copy rest of source and build in the builder stage
+COPY . .
+RUN pnpm run build:bot
 
-# The command to start the bot in development mode
-CMD ["pnpm", "--filter", "discord-bot", "dev"]
+
+# Runtime image: smaller, only copy build artifacts
+FROM node:22-alpine AS runtime
+WORKDIR /app
+
+# Optionally install pnpm or use node directly. If you need pnpm for starting, install it.
+RUN npm install -g pnpm
+
+# Copy built files and production node_modules from builder
+COPY --from=builder /app/apps/discord-bot/dist ./apps/discord-bot/dist
+COPY --from=builder /app/node_modules ./node_modules
+
+ENV NODE_ENV=production
+
+# Replace with your production start command (adjust path/script)
+CMD ["node", "apps/discord-bot/dist/index.js"]

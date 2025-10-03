@@ -22,5 +22,5 @@ export const projectUserRoles = pgTable(
       .references(() => projectModel.id, { onDelete: "cascade" }),
     assignedAt: timestamp("assigned_at").defaultNow(),
   },
-  (table) => [unique().on(table.userId, table.roleId, table.projectId)]
+  (table) => [unique().on(table.userId, table.roleId, table.projectId)],
 );

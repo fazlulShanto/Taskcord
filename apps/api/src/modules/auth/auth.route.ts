@@ -20,7 +20,7 @@ export default function AuthRoute(fastify: FastifyInstance) {
         description: "Initialize the Discord auth flow",
       },
     },
-    authController.initializeDiscordAuthFlowHandler.bind(authController)
+    authController.initializeDiscordAuthFlowHandler.bind(authController),
   );
 
   fastify.get(
@@ -35,6 +35,6 @@ export default function AuthRoute(fastify: FastifyInstance) {
         },
       },
     },
-    authController.handleDiscordOAuthCallback.bind(authController)
+    authController.handleDiscordOAuthCallback.bind(authController),
   );
 }

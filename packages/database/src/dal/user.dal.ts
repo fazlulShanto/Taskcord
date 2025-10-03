@@ -44,7 +44,7 @@ export class UserDal {
    */
   static async updateUserByDiscordId(
     discordId: string,
-    data: Partial<DbNewUser>
+    data: Partial<DbNewUser>,
   ): Promise<DbUser> {
     const [updatedUser] = await db
       .update(usersModel)

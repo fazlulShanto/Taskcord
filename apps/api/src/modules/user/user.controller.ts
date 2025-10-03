@@ -23,7 +23,7 @@ export default class UserController {
 
   public async getUserDiscordServerList(
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const userDiscordId = request.jwtUser.discordId;
 
@@ -46,7 +46,7 @@ export default class UserController {
 
   public async createDummyUsers(
     request: FastifyRequest<{ Querystring: { userCount?: number } }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const userCount = request.query.userCount || 10;
     const createdUsers = await this.userService.createDummyUser(userCount);
