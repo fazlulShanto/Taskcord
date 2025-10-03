@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "dev": "tsup --watch",
     "lint": "pnpm exec eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",

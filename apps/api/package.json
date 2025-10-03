@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/index.js",
-    "dev": "tsx watch src/index.ts",
-    "build": "tsup",
+    "dev": "npx tsdown --watch src/index.ts",
+    "build": "npx tsdown",
     "clean": "rm -rf ../../build/api",
     "typecheck": "tsc --noEmit",
     "lint": "pnpm exec eslint src/",
@@ -46,6 +46,7 @@
     "drizzle-kit": "^0.30.4",
     "pino-pretty": "^13.0.0",
     "supertest": "^7.0.0",
+    "tsdown": "^0.15.6",
     "tsup": "^8.2.4",
     "typescript": "5.5.4",
     "vitest": "^3.0.5"
