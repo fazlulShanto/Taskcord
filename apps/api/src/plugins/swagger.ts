@@ -57,5 +57,5 @@ export default fastifyPlugin(
   {
     dependencies: ["env-config"],
     fastify: "5.x",
-  }
+  },
 );

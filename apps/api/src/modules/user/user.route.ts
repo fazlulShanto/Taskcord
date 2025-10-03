@@ -25,7 +25,7 @@ export default function AuthRoute(fastify: FastifyInstance) {
         },
       },
     },
-    userController.me.bind(userController)
+    userController.me.bind(userController),
   );
 
   fastify.get(
@@ -41,7 +41,7 @@ export default function AuthRoute(fastify: FastifyInstance) {
         },
       },
     },
-    userController.getUserDiscordServerList.bind(userController)
+    userController.getUserDiscordServerList.bind(userController),
   );
 
   if (["local", "staging"].includes(process.env.NODE_ENV)) {
@@ -61,7 +61,7 @@ export default function AuthRoute(fastify: FastifyInstance) {
         },
       },
       // @ts-expect-error - this is a bug in fastify-zod
-      userController.createDummyUsers.bind(userController)
+      userController.createDummyUsers.bind(userController),
     );
   }
 }

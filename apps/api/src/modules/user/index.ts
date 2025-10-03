@@ -3,7 +3,7 @@ import { fastifyPlugin } from "fastify-plugin";
 import UserRoute from "./user.route";
 
 export default fastifyPlugin(
-    async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
-        await fastify.register(UserRoute, options);
-    }
+  async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
+    await fastify.register(UserRoute, options);
+  },
 );

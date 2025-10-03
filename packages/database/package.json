@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "lint": "eslint \"src/**/*.ts*\"",
+    "lint": "pnpm exec eslint \"src/**/*.ts*\"",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate",

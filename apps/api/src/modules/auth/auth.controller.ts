@@ -11,7 +11,7 @@ export default class AuthController {
 
   public async initializeDiscordAuthFlowHandler(
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const clientRedirectUrl = (request.query as { redirect_url: string })
       .redirect_url;
@@ -22,7 +22,7 @@ export default class AuthController {
 
   public async handleDiscordOAuthCallback(
     request: FastifyRequest,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const { code, state } = request.query as {
       code: string;
@@ -35,12 +35,12 @@ export default class AuthController {
       await this.authService.exchangeCodeForAccessToken(code);
 
     const userInfoFromDiscord = await this.authService.getUserInfoFromDiscord(
-      tokenResponse.access_token
+      tokenResponse.access_token,
     );
 
     const result = await this.authService.handleDiscordLogin(
       userInfoFromDiscord,
-      tokenResponse
+      tokenResponse,
     );
 
     const userInfo = {
@@ -55,11 +55,11 @@ export default class AuthController {
     await request.server.cacheDb.setex(
       `auth:jwt:${result.discordId}`,
       7 * 24 * 60 * 60,
-      jwtToken
+      jwtToken,
     );
 
     return reply.redirect(
-      `${atob(clientRedirectUrl)}/onboarding?auth_token=${jwtToken}`
+      `${atob(clientRedirectUrl)}/onboarding?auth_token=${jwtToken}`,
     );
   }
 }

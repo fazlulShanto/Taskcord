@@ -8,7 +8,7 @@
     "build": "tsup",
     "clean": "rm -rf ../../build/api",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src/",
+    "lint": "pnpm exec eslint src/",
     "ts-build": "tsc --emitDeclarationOnly --declaration",
     "test": "vitest --run",
     "test:watch": "vitest --watch",

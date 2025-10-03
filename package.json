@@ -3,6 +3,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:api": "turbo run build --filter=api",
+    "build:bot": "turbo run build --filter=bot",
     "run:api": "node ./apps/api/dist/index.js",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
@@ -16,7 +17,9 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
+    "eslint": "^8.57.0",
     "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.6.13",
     "tsup": "^8.2.4",
     "tsx": "^4.19.2",
     "turbo": "^2.3.4"

@@ -14,7 +14,7 @@ export const taskAssigneesModel = pgTable(
   },
   (table) => ({
     primary: primaryKey(table.taskId, table.userId),
-  })
+  }),
 );
 
 export type DbTaskAssignee = typeof taskAssigneesModel.$inferSelect;

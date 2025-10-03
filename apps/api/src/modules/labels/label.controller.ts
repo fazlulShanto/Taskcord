@@ -12,7 +12,7 @@ export default class LabelController {
   // Create a new label
   public async createLabel(
     request: FastifyRequest<{ Body: DbNewLabel }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const labelData = request.body;
 
@@ -23,10 +23,10 @@ export default class LabelController {
 
   public async getAllProjectLabels(
     request: FastifyRequest<{ Params: { projectId: string } }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const labels = await this.labelService.getAllLabelsByProjectId(
-      request.params.projectId
+      request.params.projectId,
     );
     return reply.send({ taskLabels: labels });
   }
@@ -36,19 +36,19 @@ export default class LabelController {
       Params: { labelId: string };
       Body: DbNewLabel;
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const labelData = request.body;
     const label = await this.labelService.updateLabel(
       request.params.labelId,
-      labelData
+      labelData,
     );
     return reply.send({ taskLabel: label });
   }
 
   public async deleteLabel(
     request: FastifyRequest<{ Params: { labelId: string } }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const label = await this.labelService.deleteLabel(request.params.labelId);
     return reply.send({ taskLabel: label });

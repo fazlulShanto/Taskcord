@@ -12,4 +12,4 @@ export const getPostgresUrl = (): string | undefined => {
 
 export const getCurrentEnv = (): string => {
   return process.env.NODE_ENV || "local";
-}; 
+};

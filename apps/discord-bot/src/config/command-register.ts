@@ -4,29 +4,27 @@ import type { SlashCommand } from "./command-handler";
 import { rawBotCommands } from "./command-handler";
 
 export async function registerCommands() {
-    const shouldRegisterCommands = process.env.DISCORD_SHOULD_REGISTER_COMMANDS;
-    if (shouldRegisterCommands === "false") {
-        return;
-    }
-    const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN!);
-    try {
-        console.log(
-            `Started refreshing ${rawBotCommands.length} application (/) commands.`
-        );
+  const shouldRegisterCommands = process.env.DISCORD_SHOULD_REGISTER_COMMANDS;
+  if (shouldRegisterCommands === "false") {
+    return;
+  }
+  const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN!);
+  try {
+    console.log(
+      `Started refreshing ${rawBotCommands.length} application (/) commands.`,
+    );
 
-        const commandsJson = rawBotCommands.map((command) =>
-            command.data.toJSON()
-        );
+    const commandsJson = rawBotCommands.map((command) => command.data.toJSON());
 
-        // The put method is used to fully refresh all commands in the guild with the current set
-        const data = (await rest.put(
-            Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
-            { body: commandsJson }
-        )) as SlashCommand[];
+    // The put method is used to fully refresh all commands in the guild with the current set
+    const data = (await rest.put(
+      Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!),
+      { body: commandsJson },
+    )) as SlashCommand[];
 
-        console.log(`Successfully reloaded ${data.length} slash(/) commands.`);
-    } catch (error) {
-        // And of course, make sure you catch and log any errors!
-        console.error(error);
-    }
+    console.log(`Successfully reloaded ${data.length} slash(/) commands.`);
+  } catch (error) {
+    // And of course, make sure you catch and log any errors!
+    console.error(error);
+  }
 }

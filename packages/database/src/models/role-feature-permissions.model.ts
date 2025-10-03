@@ -18,7 +18,7 @@ export const roleFeaturePermissionsModel = pgTable(
   },
   (table) => ({
     primary: primaryKey(table.roleId, table.featureId, table.permissionId),
-  })
+  }),
 );
 
 export type DbRoleFeaturePermission =
@@ -32,7 +32,7 @@ import { db } from "../index";
 
 export class RoleFeaturePermissionsDal {
   static async createPermission(
-    input: DbNewRoleFeaturePermission
+    input: DbNewRoleFeaturePermission,
   ): Promise<DbRoleFeaturePermission> {
     const [permission] = await db
       .insert(roleFeaturePermissionsModel)
@@ -43,7 +43,7 @@ export class RoleFeaturePermissionsDal {
   }
 
   static async getPermissionsByRoleId(
-    roleId: string
+    roleId: string,
   ): Promise<DbRoleFeaturePermission[]> {
     return await db
       .select()
@@ -52,7 +52,7 @@ export class RoleFeaturePermissionsDal {
   }
 
   static async getPermissionsByFeatureId(
-    featureId: string
+    featureId: string,
   ): Promise<DbRoleFeaturePermission[]> {
     return await db
       .select()
@@ -63,7 +63,7 @@ export class RoleFeaturePermissionsDal {
   static async deletePermission(
     roleId: string,
     featureId: string,
-    permissionId: string
+    permissionId: string,
   ): Promise<DbRoleFeaturePermission> {
     const [deletedPermission] = await db
       .delete(roleFeaturePermissionsModel)
@@ -71,8 +71,8 @@ export class RoleFeaturePermissionsDal {
         and(
           eq(roleFeaturePermissionsModel.roleId, roleId),
           eq(roleFeaturePermissionsModel.featureId, featureId),
-          eq(roleFeaturePermissionsModel.permissionId, permissionId)
-        )
+          eq(roleFeaturePermissionsModel.permissionId, permissionId),
+        ),
       )
       .returning();
 

@@ -8,5 +8,5 @@ export default fastifyPlugin(
       parseOptions: {},
     });
   },
-  { name: "cookie", dependencies: ["env-config"] }
+  { name: "cookie", dependencies: ["env-config"] },
 );

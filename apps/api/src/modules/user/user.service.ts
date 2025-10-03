@@ -18,7 +18,7 @@ export default class UserService {
   }
 
   public async getUserDiscordServerList(
-    accessToken: string
+    accessToken: string,
   ): Promise<DiscordServerListResponse | null> {
     const baseUrl = "https://discord.com/api/v10/users/@me/guilds";
     let currentToken = accessToken;

@@ -22,7 +22,7 @@ export const commentModel = pgTable("comments", {
     .notNull()
     .references(() => usersModel.id),
   parentCommentId: uuid("parent_comment_id").references(
-    (): AnyPgColumn => commentModel.id
+    (): AnyPgColumn => commentModel.id,
   ),
   content: text("content").notNull(),
   attachments: jsonb("attachments"),
@@ -62,7 +62,7 @@ export class CommentDal {
   }
 
   static async getCommentReplies(
-    parentCommentId: string
+    parentCommentId: string,
   ): Promise<DbComment[]> {
     return await db
       .select()
@@ -72,7 +72,7 @@ export class CommentDal {
 
   static async updateComment(
     id: string,
-    data: Partial<DbNewComment>
+    data: Partial<DbNewComment>,
   ): Promise<DbComment> {
     const [updatedComment] = await db
       .update(commentModel)

@@ -27,7 +27,7 @@ export default function StatusRoutes(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    statusController.createStatus.bind(statusController)
+    statusController.createStatus.bind(statusController),
   );
 
   // Get all statuses of a project
@@ -51,7 +51,7 @@ export default function StatusRoutes(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    statusController.getStatusesByProjectId.bind(statusController)
+    statusController.getStatusesByProjectId.bind(statusController),
   );
 
   // Update a status
@@ -70,7 +70,7 @@ export default function StatusRoutes(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    statusController.updateStatus.bind(statusController)
+    statusController.updateStatus.bind(statusController),
   );
 
   // Delete a status
@@ -88,7 +88,7 @@ export default function StatusRoutes(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    statusController.deleteStatus.bind(statusController)
+    statusController.deleteStatus.bind(statusController),
   );
 
   // Delete multiple statuses
@@ -108,6 +108,6 @@ export default function StatusRoutes(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    statusController.deleteStatusBulk.bind(statusController)
+    statusController.deleteStatusBulk.bind(statusController),
   );
 }

@@ -4,15 +4,15 @@
 
 This project has two Docker Compose configurations:
 
--   **`docker-compose.local.yml`** - Development environment with hot reload
--   **`docker-compose.prod.yml`** - Production environment with optimized builds
+- **`docker-compose.local.yml`** - Development environment with hot reload
+- **`docker-compose.prod.yml`** - Production environment with optimized builds
 
 ## Development Setup
 
 ### Requirements
 
--   Docker with BuildKit enabled
--   Docker Compose v3.8+
+- Docker with BuildKit enabled
+- Docker Compose v3.8+
 
 ### Running Development Environment
 
@@ -32,16 +32,16 @@ docker compose -f docker-compose.local.yml down -v
 
 **Features:**
 
--   ✅ Hot reload enabled (changes reflect immediately)
--   ✅ Source code mounted as volumes
--   ✅ Fast pnpm installs with BuildKit cache mounts
--   ✅ Development mode with tsx watch
+- ✅ Hot reload enabled (changes reflect immediately)
+- ✅ Source code mounted as volumes
+- ✅ Fast pnpm installs with BuildKit cache mounts
+- ✅ Development mode with tsx watch
 
 **Access:**
 
--   API: http://localhost:4005
--   PostgreSQL: localhost:5435
--   Redis: localhost:6385
+- API: http://localhost:4005
+- PostgreSQL: localhost:5435
+- Redis: localhost:6385
 
 ---
 
@@ -51,17 +51,17 @@ docker compose -f docker-compose.local.yml down -v
 
 1. **Create production environment file:**
 
-    ```bash
-    cp .env.prod.example .env.prod
-    ```
+   ```bash
+   cp .env.prod.example .env.prod
+   ```
 
 2. **Edit `.env.prod` with your production values:**
 
-    - Strong passwords for database
-    - Production domain URLs
-    - Discord OAuth credentials
-    - Strong JWT secret
-    - CORS origins
+   - Strong passwords for database
+   - Production domain URLs
+   - Discord OAuth credentials
+   - Strong JWT secret
+   - CORS origins
 
 3. **Add health check endpoint** (if not exists):
    Ensure your API has a `/health` endpoint for Docker health checks.
@@ -87,19 +87,19 @@ docker compose -f docker-compose.prod.yml up -d --build --force-recreate
 
 **Features:**
 
--   ✅ Multi-stage optimized builds (smaller images)
--   ✅ Production runtime with compiled code
--   ✅ Health checks for all services
--   ✅ Automatic restart policies
--   ✅ Log rotation configured
--   ✅ Isolated production network
--   ✅ Persistent data volumes
+- ✅ Multi-stage optimized builds (smaller images)
+- ✅ Production runtime with compiled code
+- ✅ Health checks for all services
+- ✅ Automatic restart policies
+- ✅ Log rotation configured
+- ✅ Isolated production network
+- ✅ Persistent data volumes
 
 **Access:**
 
--   API: http://localhost:4005
--   PostgreSQL: localhost:5432
--   Redis: localhost:6379
+- API: http://localhost:4005
+- PostgreSQL: localhost:5432
+- Redis: localhost:6379
 
 ---
 
@@ -109,17 +109,17 @@ docker compose -f docker-compose.prod.yml up -d --build --force-recreate
 
 **Builder Stage:**
 
--   Installs all dependencies
--   Copies source code
--   Builds TypeScript → JavaScript
--   Uses BuildKit cache for pnpm store
+- Installs all dependencies
+- Copies source code
+- Builds TypeScript → JavaScript
+- Uses BuildKit cache for pnpm store
 
 **Runtime Stage:**
 
--   Minimal Node.js Alpine image
--   Only compiled artifacts
--   Production node_modules
--   Smaller image size (~50% reduction)
+- Minimal Node.js Alpine image
+- Only compiled artifacts
+- Production node_modules
+- Smaller image size (~50% reduction)
 
 ### Cache Optimization
 
@@ -132,9 +132,9 @@ RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
 
 Benefits:
 
--   First build: ~2-3 minutes
--   Subsequent builds (no dep changes): ~30-60 seconds
--   Cache persists between builds
+- First build: ~2-3 minutes
+- Subsequent builds (no dep changes): ~30-60 seconds
+- Cache persists between builds
 
 ---
 
@@ -181,8 +181,8 @@ docker stats
 
 If ports are already in use:
 
--   Local: Change ports in `docker-compose.local.yml`
--   Prod: Change ports in `docker-compose.prod.yml`
+- Local: Change ports in `docker-compose.local.yml`
+- Prod: Change ports in `docker-compose.prod.yml`
 
 ### Build Cache Issues
 
@@ -225,17 +225,17 @@ docker compose -f docker-compose.prod.yml logs api
 
 ### Required for Production
 
--   `POSTGRES_PASSWORD` - Strong database password
--   `JWT_SECRET` - Strong random secret (min 32 chars)
--   `DISCORD_AUTH_CLIENT_SECRET` - From Discord Developer Portal
--   `CORS_ORIGIN_LIST` - Your production domain(s)
+- `POSTGRES_PASSWORD` - Strong database password
+- `JWT_SECRET` - Strong random secret (min 32 chars)
+- `DISCORD_AUTH_CLIENT_SECRET` - From Discord Developer Portal
+- `CORS_ORIGIN_LIST` - Your production domain(s)
 
 ### Network Communication
 
 Inside Docker, services use service names:
 
--   Database: `postgresql://postgres:password@db:5432/taskcord`
--   Redis: `redis://redis:6379`
+- Database: `postgresql://postgres:password@db:5432/taskcord`
+- Redis: `redis://redis:6379`
 
 **Don't use `localhost` or `127.0.0.1` in container env vars!**
 
@@ -245,23 +245,23 @@ Inside Docker, services use service names:
 
 ### Production Checklist
 
--   [ ] Strong database password set
--   [ ] JWT secret is random and secure
--   [ ] CORS origins restricted to your domain
--   [ ] `.env.prod` not committed to git
--   [ ] Health check endpoint doesn't expose sensitive data
--   [ ] Log rotation configured (prevents disk fill)
--   [ ] Database backups scheduled
--   [ ] SSL/TLS termination at reverse proxy (nginx/traefik)
+- [ ] Strong database password set
+- [ ] JWT secret is random and secure
+- [ ] CORS origins restricted to your domain
+- [ ] `.env.prod` not committed to git
+- [ ] Health check endpoint doesn't expose sensitive data
+- [ ] Log rotation configured (prevents disk fill)
+- [ ] Database backups scheduled
+- [ ] SSL/TLS termination at reverse proxy (nginx/traefik)
 
 ### Recommended: Reverse Proxy
 
 Use nginx or Traefik in front of your containers for:
 
--   SSL/TLS termination
--   Rate limiting
--   Load balancing
--   Security headers
+- SSL/TLS termination
+- Rate limiting
+- Load balancing
+- Security headers
 
 ---
 
@@ -269,24 +269,24 @@ Use nginx or Traefik in front of your containers for:
 
 1. **Use BuildKit:** Always enable for faster builds
 
-    ```bash
-    export DOCKER_BUILDKIT=1
-    ```
+   ```bash
+   export DOCKER_BUILDKIT=1
+   ```
 
 2. **Layer Caching:** Don't invalidate dependency layers unnecessarily
 
-    - Dockerfile copies package.json files first
-    - Then installs dependencies
-    - Then copies source code
+   - Dockerfile copies package.json files first
+   - Then installs dependencies
+   - Then copies source code
 
 3. **Multi-stage Builds:** Keep production images small
 
-    - Builder: ~800MB
-    - Runtime: ~200MB
+   - Builder: ~800MB
+   - Runtime: ~200MB
 
 4. **pnpm Store Cache:** Speeds up subsequent installs
-    - Cached in `/root/.pnpm-store`
-    - Persists between builds
+   - Cached in `/root/.pnpm-store`
+   - Persists between builds
 
 ---
 
@@ -298,23 +298,23 @@ Example GitHub Actions workflow:
 name: Deploy Production
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Build and push
-              run: |
-                  docker compose -f docker-compose.prod.yml build
-                  docker compose -f docker-compose.prod.yml push
+      - name: Build and push
+        run: |
+          docker compose -f docker-compose.prod.yml build
+          docker compose -f docker-compose.prod.yml push
 
-            - name: Deploy to server
-              run: |
-                  ssh user@server 'cd /app && docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d'
+      - name: Deploy to server
+        run: |
+          ssh user@server 'cd /app && docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d'
 ```
 
 ---
@@ -323,6 +323,6 @@ jobs:
 
 For issues related to:
 
--   Docker setup: Check this README
--   Application code: See main project README
--   Dependencies: Check package.json files
+- Docker setup: Check this README
+- Application code: See main project README
+- Dependencies: Check package.json files

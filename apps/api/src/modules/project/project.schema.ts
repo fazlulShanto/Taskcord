@@ -58,5 +58,5 @@ export const { schemas: projectSchemas, $ref: projectSchemaRef } =
       errorResponse: errorResponseSchema,
       projectSchemaWithId,
     } as const,
-    { $id: "projectSchema" }
+    { $id: "projectSchema" },
   );

@@ -35,7 +35,7 @@ export const discordServerListRouteSchema = {
         banner: z.string(),
         owner: z.boolean(),
         permissions: z.string(),
-      })
+      }),
     ),
   },
 };
@@ -46,5 +46,5 @@ export const { schemas: userSchemas, $ref: userSchemaRef } = buildJsonSchemas(
     meErrorResponse: meRouteSchema.response[404],
     discordServerListResponse: discordServerListRouteSchema.response[200],
   } as const,
-  { $id: "userSchema" }
+  { $id: "userSchema" },
 );

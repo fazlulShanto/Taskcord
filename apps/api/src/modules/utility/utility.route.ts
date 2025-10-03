@@ -17,7 +17,7 @@ export default function UtilityRoute(fastify: FastifyInstance) {
         },
       },
     },
-    utilityController.getApiUptimeHandler.bind(utilityController)
+    utilityController.getApiUptimeHandler.bind(utilityController),
   );
 
   fastify.get(
@@ -31,7 +31,7 @@ export default function UtilityRoute(fastify: FastifyInstance) {
         },
       },
     },
-    utilityController.getApiStatusHandler.bind(utilityController)
+    utilityController.getApiStatusHandler.bind(utilityController),
   );
 
   fastify.get(
@@ -45,7 +45,7 @@ export default function UtilityRoute(fastify: FastifyInstance) {
         },
       },
     },
-    utilityController.getApiStatusHandler.bind(utilityController)
+    utilityController.getApiStatusHandler.bind(utilityController),
   );
 
   fastify.get(
@@ -59,7 +59,7 @@ export default function UtilityRoute(fastify: FastifyInstance) {
         },
       },
     },
-    utilityController.getServerHardwareInfoHandler.bind(utilityController)
+    utilityController.getServerHardwareInfoHandler.bind(utilityController),
   );
 
   fastify.post(
@@ -73,6 +73,6 @@ export default function UtilityRoute(fastify: FastifyInstance) {
         },
       },
     },
-    utilityController.cookieTestHandler.bind(utilityController)
+    utilityController.cookieTestHandler.bind(utilityController),
   );
 }

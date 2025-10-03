@@ -58,7 +58,7 @@ export class StatusDal {
 
   static async updateStatus(
     id: string,
-    data: Partial<DbNewStatus>
+    data: Partial<DbNewStatus>,
   ): Promise<DbStatus> {
     const [status] = await db
       .update(statusModel)

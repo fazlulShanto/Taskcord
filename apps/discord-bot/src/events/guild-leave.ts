@@ -13,7 +13,7 @@ export const handleGuildLeave = async (guild: Guild) => {
   } catch (error) {
     console.error(
       `❌ Failed to update server ${guild.name} to database:`,
-      error
+      error,
     );
   }
 };

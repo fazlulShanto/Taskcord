@@ -3,7 +3,7 @@ import { fastifyPlugin } from "fastify-plugin";
 import AuthRoute from "./auth.route";
 
 export default fastifyPlugin(
-    async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
-        await fastify.register(AuthRoute, options);
-    }
+  async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
+    await fastify.register(AuthRoute, options);
+  },
 );

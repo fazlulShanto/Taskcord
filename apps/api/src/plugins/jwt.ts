@@ -19,19 +19,19 @@ export default fastifyPlugin(
       "jwtAuth",
       async function jwtAuthHandler(
         request: FastifyRequest,
-        reply: FastifyReply
+        reply: FastifyReply,
       ): Promise<void> {
         try {
           await request.jwtVerify();
         } catch (err) {
           await reply.unauthorized(
-            `Failed to validate auth token=${request.headers.authorization}`
+            `Failed to validate auth token=${request.headers.authorization}`,
           );
         }
-      }
+      },
     );
   },
-  { name: "jwt", dependencies: ["env-config"] }
+  { name: "jwt", dependencies: ["env-config"] },
 );
 
 export interface JwtPayload {

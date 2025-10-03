@@ -4,11 +4,11 @@ import utilityRoute from "./utility.route";
 import { utilitySchemas } from "./utility.schema";
 
 export default fastifyPlugin(
-    async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
-        for (const schema of utilitySchemas) {
-            fastify.addSchema(schema);
-        }
-
-        await fastify.register(utilityRoute, options);
+  async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
+    for (const schema of utilitySchemas) {
+      fastify.addSchema(schema);
     }
+
+    await fastify.register(utilityRoute, options);
+  },
 );

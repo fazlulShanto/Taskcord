@@ -5,5 +5,5 @@ import StatusRoute from "./status.route";
 export default fastifyPlugin(
   async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
     await fastify.register(StatusRoute, options);
-  }
+  },
 );

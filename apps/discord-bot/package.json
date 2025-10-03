@@ -7,7 +7,7 @@
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
     "build": "tsup",
     "clean": "rm -rf dist",
-    "lint": "eslint src/",
+    "lint": "pnpm exec eslint src/",
     "test": "echo \"Error: no test specified\" ",
     "register-commands": "tsx src/config/command-register.ts",
     "db-test": "tsx pgtest.ts"
@@ -17,7 +17,8 @@
     "@taskcord/database": "workspace:*",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
-    "pg": "^8.13.2"
+    "pg": "^8.13.2",
+    "ioredis": "^5.5.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

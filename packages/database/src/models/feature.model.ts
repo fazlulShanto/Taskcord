@@ -50,7 +50,7 @@ export class FeatureDal {
 
   static async updateFeature(
     id: string,
-    data: Partial<DbNewFeature>
+    data: Partial<DbNewFeature>,
   ): Promise<DbFeature> {
     const [updatedFeature] = await db
       .update(featureModel)

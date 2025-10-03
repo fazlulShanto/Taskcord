@@ -29,7 +29,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
       },
     },
     // @ts-expect-error - this is a bug in fastify-zod
-    projectController.createProject.bind(projectController)
+    projectController.createProject.bind(projectController),
   );
 
   // Get all projects
@@ -45,7 +45,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
         },
       },
     },
-    projectController.getAllProjects.bind(projectController)
+    projectController.getAllProjects.bind(projectController),
   );
 
   // Get current user's projects
@@ -79,7 +79,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
         },
       },
     },
-    projectController.getProject.bind(projectController)
+    projectController.getProject.bind(projectController),
   );
 
   //   Update a project
@@ -98,7 +98,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
         },
       },
     },
-    projectController.updateProject.bind(projectController)
+    projectController.updateProject.bind(projectController),
   );
 
   fastify.get(
@@ -114,7 +114,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
         },
       },
     },
-    projectController.isBotInServer.bind(projectController)
+    projectController.isBotInServer.bind(projectController),
   );
   // Delete a project
   fastify.delete(
@@ -131,6 +131,6 @@ export default function ProjectRoute(fastify: FastifyInstance) {
         },
       },
     },
-    projectController.deleteProject.bind(projectController)
+    projectController.deleteProject.bind(projectController),
   );
 }

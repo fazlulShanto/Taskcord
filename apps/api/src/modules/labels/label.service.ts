@@ -13,7 +13,7 @@ export default class LabelService {
 
   public async updateLabel(
     id: string,
-    labelData: Partial<DbNewLabel>
+    labelData: Partial<DbNewLabel>,
   ): Promise<DbLabel | null> {
     return LabelDal.updateLabel(id, labelData);
   }

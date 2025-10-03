@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-floating-promises -- Discord.js client methods return promises that don't need to be awaited */
 
+import { checkConnection } from "@taskcord/database";
 import type { Collection } from "discord.js";
 import { Client, Events, GatewayIntentBits } from "discord.js";
 import * as dotenv from "dotenv";
-import { CreateRedisClient, type Redis } from "@taskcord/redis";
-import { checkConnection } from "@taskcord/database";
 import type { SlashCommand } from "./config/command-handler";
 import { getCommandCollection } from "./config/command-handler";
 import { registerCommands } from "./config/command-register";
-import handleInteractionCreate from "./events/interaction-create";
 import { handleGuildCreate } from "./events/guild-join";
 import { handleGuildLeave } from "./events/guild-leave";
+import handleInteractionCreate from "./events/interaction-create";
+import { CreateRedisClient, type Redis } from "./utils/redis";
 
 dotenv.config();
 
@@ -40,6 +40,7 @@ const createAndStartBot = async () => {
   await registerCommands();
 
   client.once("ready", () => {
+    console.log("🤖".repeat(10));
     console.log(`✅ Logged in as ${client.user?.tag}!`);
   });
 

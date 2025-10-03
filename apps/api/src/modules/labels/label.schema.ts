@@ -52,5 +52,5 @@ export const { schemas: labelSchemas, $ref: labelSchemaRef } = buildJsonSchemas(
     errorResponse: errorResponseSchema,
     labelSchemaWithId,
   } as const,
-  { $id: "LabelSchema" }
+  { $id: "LabelSchema" },
 );

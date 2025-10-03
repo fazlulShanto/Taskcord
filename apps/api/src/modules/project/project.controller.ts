@@ -12,7 +12,7 @@ export default class ProjectController {
   // Create a new project
   public async createProject(
     request: FastifyRequest<{ Body: z.infer<typeof createProjectSchema> }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const userDiscordId = request.jwtUser.discordId;
     const projectData = request.body;
@@ -46,7 +46,7 @@ export default class ProjectController {
 
   public async getAllProjects(request: FastifyRequest, reply: FastifyReply) {
     const projects = await this.projectService.getAllProjects(
-      request.jwtUser.id
+      request.jwtUser.id,
     );
     return reply.send({ projects });
   }

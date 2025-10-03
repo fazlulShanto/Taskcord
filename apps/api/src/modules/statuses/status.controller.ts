@@ -14,7 +14,7 @@ export default class StatusController {
       };
       Params: { projectId: string };
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const status = await this.statusService.createStatus({
       ...request.body,
@@ -29,10 +29,10 @@ export default class StatusController {
     request: FastifyRequest<{
       Params: { statusId: string };
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const status = await this.statusService.getStatusById(
-      request.params.statusId
+      request.params.statusId,
     );
 
     if (!status) {
@@ -50,10 +50,10 @@ export default class StatusController {
     request: FastifyRequest<{
       Params: { projectId: string };
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const statuses = await this.statusService.getStatusesByProjectId(
-      request.params.projectId
+      request.params.projectId,
     );
 
     return reply.send({ statuses });
@@ -69,11 +69,11 @@ export default class StatusController {
         order?: number;
       };
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const status = await this.statusService.updateStatus(
       request.params.statusId,
-      request.body
+      request.body,
     );
 
     return reply.send({ status });
@@ -83,10 +83,10 @@ export default class StatusController {
     request: FastifyRequest<{
       Params: { statusId: string };
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const status = await this.statusService.deleteStatus(
-      request.params.statusId
+      request.params.statusId,
     );
 
     return reply.send({ status });
@@ -96,10 +96,10 @@ export default class StatusController {
     request: FastifyRequest<{
       Body: { ids: string[] };
     }>,
-    reply: FastifyReply
+    reply: FastifyReply,
   ) {
     const statuses = await this.statusService.deleteStatusBulk(
-      request.body.ids
+      request.body.ids,
     );
 
     return reply.send({ statuses });

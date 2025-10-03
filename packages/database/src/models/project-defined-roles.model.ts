@@ -29,7 +29,7 @@ export type DbNewProjectDefinedRole =
 
 export class ProjectDefinedRolesDal {
   static async createRole(
-    input: DbNewProjectDefinedRole
+    input: DbNewProjectDefinedRole,
   ): Promise<DbProjectDefinedRole> {
     const [role] = await db
       .insert(projectDefinedRolesModel)
@@ -50,7 +50,7 @@ export class ProjectDefinedRolesDal {
   }
 
   static async getRolesByProjectId(
-    projectId: string
+    projectId: string,
   ): Promise<DbProjectDefinedRole[]> {
     return await db
       .select()
@@ -60,7 +60,7 @@ export class ProjectDefinedRolesDal {
 
   static async updateRole(
     id: string,
-    data: Partial<DbNewProjectDefinedRole>
+    data: Partial<DbNewProjectDefinedRole>,
   ): Promise<DbProjectDefinedRole> {
     const [updatedRole] = await db
       .update(projectDefinedRolesModel)

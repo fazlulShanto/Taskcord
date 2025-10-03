@@ -53,5 +53,5 @@ export const { schemas: statusSchemas, $ref: statusSchemaRef } =
       errorResponse: errorResponseSchema,
       statusSchemaWithId,
     } as const,
-    { $id: "StatusSchema" }
+    { $id: "StatusSchema" },
   );

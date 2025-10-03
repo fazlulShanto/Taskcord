@@ -57,7 +57,7 @@ export class TaskDal {
 
   static async updateTask(
     id: string,
-    data: Partial<DbNewTask>
+    data: Partial<DbNewTask>,
   ): Promise<DbTask> {
     const [updatedTask] = await db
       .update(taskModel)

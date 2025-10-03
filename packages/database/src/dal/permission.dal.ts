@@ -43,7 +43,7 @@ export class PermissionDal {
 
   static async updatePermission(
     id: string,
-    data: Partial<DbNewPermission>
+    data: Partial<DbNewPermission>,
   ): Promise<DbPermission> {
     const [updatedPermission] = await db
       .update(permissionModel)
