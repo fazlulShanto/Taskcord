@@ -24,7 +24,6 @@
     "@fastify/swagger-ui": "^5.2.1",
     "@orama/cuid2": "^2.2.3",
     "@taskcord/database": "workspace:*",
-    "@taskcord/redis": "workspace:*",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
     "fastify": "^5.2.1",

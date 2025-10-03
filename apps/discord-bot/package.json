@@ -15,7 +15,6 @@
   "dependencies": {
     "discord.js": "^14.17.3",
     "@taskcord/database": "workspace:*",
-    "@taskcord/redis": "workspace:*",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",
     "pg": "^8.13.2"
