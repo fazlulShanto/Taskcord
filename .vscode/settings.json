@@ -1,24 +1,3 @@
-// {
-//     "eslint.workingDirectories": [
-//         {
-//             "mode": "auto"
-//         }
-//     ],
-//     "editor.codeActionsOnSave": {
-//         "source.fixAll": "always",
-//         "source.fixAll.eslint": "always"
-//     },
-//     "eslint.validate": [
-//         "javascript",
-//         "javascriptreact",
-//         "typescript",
-//         "typescriptreact"
-//     ],
-//     "eslint.format.enable": false,
-//     "editor.formatOnSave": true,
-//     "editor.defaultFormatter": "esbenp.prettier-vscode"
-// }
-
 {
   "editor.formatOnPaste": true,
   "editor.fontSize": 13,
@@ -94,7 +73,7 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/tmp": true,
-    "**/node_modules": true,
+    // "**/node_modules": true,
     "**/bower_components": true,
     "**/dist": true
   },

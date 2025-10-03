@@ -1,0 +1,111 @@
+# docker-compose.prod.yml
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:17
+    container_name: postgres-prod
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: taskcord
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    networks:
+      - taskcord-prod
+
+  # Redis
+  redis:
+    container_name: redis-prod
+    image: "redis:7-alpine"
+    restart: always
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis_data_prod:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "6379:6379"
+    networks:
+      - taskcord-prod
+
+  # API Service (Production)
+  api:
+    container_name: taskcord-api-prod
+    build:
+      context: .
+      dockerfile: ./Dockerfile.api
+      target: runtime  # Use optimized runtime stage
+    restart: always
+    ports:
+      - 4005:4005
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ./.env.prod  # Use production env file
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - taskcord-prod
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Discord Bot Service (Production)
+  discord-bot:
+    container_name: discord-bot-prod
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dbot
+      target: runtime  # Use optimized runtime stage if multi-stage
+    restart: always
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ./.env.prod
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - taskcord-prod
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data_prod:
+    driver: local
+  redis_data_prod:
+    driver: local
+
+networks:
+  taskcord-prod:
+    driver: bridge

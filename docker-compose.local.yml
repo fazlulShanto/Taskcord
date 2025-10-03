@@ -1,27 +1,83 @@
-version: "3.8"
+# docker-compose.local.yml
+version: '3.8'
 
 services:
+  # PostgreSQL Database
+  db:
+    image: postgres:17
+    container_name: postgres
+    restart: on-failure:3 # Restart up to 3 times on failure
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskcord
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Redis
+  redis:
+    container_name: redis
+    image: "redis:7-alpine"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./.docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "6385:6379"
+
+  # # API Service
   api:
+    container_name: taskcord-api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile.api
+      target: builder  # Use builder stage (has source + node_modules)
+    # restart: on-failure
+    command: ["pnpm", "--filter", "api", "dev"]  # Override CMD to run dev mode
     ports:
-      - "4005:4005"
-    command: node apps/api/dist/index.js
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - REMOTE_BACKEND_HOST_URL=${REMOTE_BACKEND_HOST_URL}
-      - LOCAL_BACKEND_HOST_URL=${LOCAL_BACKEND_HOST_URL}
-      - DISCORD_OAUTH_REDIRECT_URL=${DISCORD_OAUTH_REDIRECT_URL}
-      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
-      - DISCORD_AUTH_CLIENT_ID=${DISCORD_AUTH_CLIENT_ID}
-      - DISCORD_AUTH_CLIENT_SECRET=${DISCORD_AUTH_CLIENT_SECRET}
-      - FRONTEND_REDIRECT_URL=${FRONTEND_REDIRECT_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_MAX_AGE=${JWT_MAX_AGE}
-      - CORS_ORIGIN_LIST=${CORS_ORIGIN_LIST}
-      - DISCORD_OAUTH_SCOPES=${DISCORD_OAUTH_SCOPES}
-      - PG_DB_URL_LOCAL=${PG_DB_URL_LOCAL}
-      - PG_DB_URL_PROD=${PG_DB_URL_PROD}
-      - REDIS_URL_LOCAL=${REDIS_URL_LOCAL}
-      - REDIS_URL_PROD=${REDIS_URL_PROD}
+      - 4005:4005
+    volumes:
+      - ./apps/api:/app/apps/api  # Mount only API source for hot reload
+      - ./packages:/app/packages  # Mount packages for monorepo deps
+      - /app/node_modules  # Prevent overwriting node_modules
+    env_file:
+      - ./.env.local
+    depends_on:
+      - db
+      - redis
+
+  # # Discord Bot Service
+  # discord-bot:
+  #   container_name: discord-bot
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile.dbot
+  #   restart: unless-stopped
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
+  #   env_file:
+  #     - ./apps/discord-bot/.env
+  #   depends_on:
+  #     - postgres
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+
+networks:
+  taskord:
