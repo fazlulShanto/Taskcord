@@ -20,7 +20,7 @@ export function LandingNav() {
     { name: 'Features', href: '#features' },
     { name: 'Pricing', href: '#pricing' },
     { name: 'Docs', href: '#' },
-    { name: 'Community', href: '#' },
+    { name: 'Dashboard', href: '/onboarding' },
   ];
 
   return (

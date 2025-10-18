@@ -58,6 +58,26 @@ export const runMigrations = async () => {
     }
 };
 
+// generate migration file utility
+export const generateMigration = async (migrationName?: string) => {
+    const { execSync } = await import("child_process");
+
+    try {
+        const name = migrationName || `migration_${Date.now()}`;
+        console.log(`📝 Generating migration: ${name}`);
+
+        execSync(`npx drizzle-kit generate --name ${name}`, {
+            stdio: "inherit",
+            cwd: resolve(__dirname, ".."),
+        });
+
+        console.log("✅ Migration file generated successfully");
+    } catch (err) {
+        console.error("❌ Migration generation failed", err);
+        throw err;
+    }
+};
+
 // Pool event handlers
 pool.on("error", () => {
     console.error("❌ Unexpected error on idle client");
