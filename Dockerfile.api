@@ -29,6 +29,8 @@ WORKDIR /app
 
 # Optionally install pnpm or use node directly. If you need pnpm for starting, install it.
 RUN npm install -g pnpm
+RUN npm install -g tsdown
+
 
 # Copy built files and production node_modules from builder
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
@@ -38,4 +40,5 @@ ENV NODE_ENV=production
 EXPOSE 4005
 
 # Replace with your production start command (adjust path/script)
-CMD ["node", "apps/api/dist/index.js"]
+# CMD ["node", "apps/api/dist/index.js"]
+CMD ["pnpm", "--filter", "api", "dev"]
