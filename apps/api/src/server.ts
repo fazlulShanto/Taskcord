@@ -1,4 +1,4 @@
-import { checkConnection, runMigrations } from "@taskcord/database";
+import { generateMigration, runMigrations } from "@taskcord/database";
 import * as dotenv from "dotenv";
 import type { FastifyInstance, FastifyServerOptions } from "fastify";
 import Fastify from "fastify";
@@ -70,7 +70,8 @@ export const startServer = async (): Promise<FastifyInstance> => {
         // check if cache & postgres are connected
         await fastifyServer.cacheDb.ping();
 
-        await checkConnection();
+        // await checkConnection();
+        await generateMigration();
         await runMigrations();
 
         await fastifyServer.listen({ port: Number(port), host: "0.0.0.0" });
