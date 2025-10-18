@@ -28,6 +28,7 @@ WORKDIR /app
 
 # Optionally install pnpm or use node directly. If you need pnpm for starting, install it.
 RUN npm install -g pnpm
+RUN npm install -g tsdown
 
 # Copy built files and production node_modules from builder
 COPY --from=builder /app/apps/discord-bot/dist ./apps/discord-bot/dist
