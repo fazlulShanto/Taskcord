@@ -37,7 +37,9 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",
-      "esbuild"
+      "esbuild",
+      "msw",
+      "unrs-resolver"
     ]
   }
 }
