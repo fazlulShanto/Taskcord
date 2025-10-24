@@ -1,9 +1,0 @@
-node_modules
-dist
-build
-*.md
-*.svg
-pnpm-lock.yaml
-pnpm-workspace.yaml
-src/routeTree.gen.ts
-.github/*
