@@ -71,8 +71,9 @@ export default class StatusController {
             request.params.statusId,
             request.body
         );
+        console.log("🟥Updated Status:", status);
 
-        return reply.send({ status });
+        return reply.send({ status }).code(200);
     }
 
     async deleteStatus(

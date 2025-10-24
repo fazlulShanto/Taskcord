@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { type FC } from 'react';
+import { JSX, type FC } from 'react';
 
 interface LandingDashboardCardProps {
   title: string;
@@ -9,7 +9,7 @@ interface LandingDashboardCardProps {
 
 export const OverviewCard: FC<LandingDashboardCardProps> = ({ title, statData, icon }) => {
   return (
-    <Card className="relative flex flex-1 justify-around gap-2 overflow-hidden p-4">
+    <Card className="relative flex flex-row flex-1 justify-around gap-2 overflow-hidden p-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#000000_0%,#1F1F1F_100%)]"></div>
       <div className="z-10 flex h-full w-full flex-col">
         <CardHeader className="p-0">

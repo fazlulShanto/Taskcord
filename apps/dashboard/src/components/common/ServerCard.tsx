@@ -24,7 +24,7 @@ export const ServerCard: FC<ServerCardProps> = ({
         <div className="relative h-44 overflow-hidden rounded-xl bg-gray-900 p-6">
           {/* Initial state */}
           <div className="absolute inset-0 flex transform flex-col items-center justify-between p-6 transition-all duration-300 group-hover:-translate-x-full">
-            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-2 border-white/70">
+            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-white/70">
               <img src={logoUrl} alt={`${name} logo`} className="h-full w-full object-cover" />
             </div>
             <div className="max-w-full text-center">
@@ -39,7 +39,7 @@ export const ServerCard: FC<ServerCardProps> = ({
           <div className="absolute inset-0 flex translate-y-full transform flex-col justify-between p-6 transition-all duration-300 group-hover:translate-y-0">
             {/* Top row: Logo, Title, Date */}
             <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border-2 border-white/10">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border-2 border-white/10">
                 <img src={logoUrl} alt={`${name} logo`} className="h-full w-full object-cover" />
               </div>
               <div className="min-w-0 flex-1">

@@ -1,6 +1,5 @@
 import { DiscordSignIn } from '@/components/common/discord-signin';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { ArrowRight, Github, Star } from 'lucide-react';
 
@@ -86,14 +85,15 @@ export function HeroSection() {
             transition={{ delay: 0.6 }}
             className="flex flex-col items-center justify-center gap-4 sm:flex-row"
           >
-            <Button
-              size="lg"
-              className="group gap-2 bg-blue-600 px-8 py-6 text-lg font-semibold text-white hover:bg-blue-700"
+            <a
+              href={`/onboarding?auth_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkaXNjb3JkSWQiOiI1MjEzMzA5NDgzODI2NTQ0ODciLCJmdWxsTmFtZSI6ImEuc2VocmlrIiwiYXZhdGFyIjoiZGQyMjE1YmQ3ZjM2NjM1Y2EyNTFiZTU1ZWZiNTEyNGIiLCJlbWFpbCI6ImFzZWhyaWtAZ21haWwuY29tIiwiaWQiOiIwMTk5ZjdhOC02MmI4LTcyNmEtYjRkMS0zMjNiOGNjOGVlYTAiLCJpYXQiOjE3NjEzMjk4MjgsImV4cCI6MTc2MTkzNDYyOH0.dcLsDPJTRgJDekiQP_qZmVluux4wTaxtEINrp5PZttU`}
+              
+              className="group h-fit rounded-3xl flex w-fit gap-2 bg-blue-600 p-3 px-6 text-lg font-semibold text-white hover:bg-blue-700"
             >
-              <Github className="h-5 w-5" />
-              Sign Up with GitHub
+     
+              Test Token
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
+            </a>
 
             <DiscordSignIn className="rounded-md border border-gray-300 p-3" />
           </motion.div>

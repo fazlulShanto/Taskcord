@@ -7,6 +7,7 @@ export const Route = createFileRoute('/_authGuard')({
   beforeLoad: async (ctx) => {
     const authToken = new URLSearchParams(ctx.location.search).get('auth_token');
     if (authToken) {
+      console.log('Auth Token found in URL:', authToken);
       localStorage.setItem('token', authToken);
       useAuthStore.setState({
         isAuthenticated: true,

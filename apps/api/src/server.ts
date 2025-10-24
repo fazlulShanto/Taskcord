@@ -1,4 +1,4 @@
-import { generateMigration, runMigrations } from "@taskcord/database";
+import { runMigrations } from "@taskcord/database";
 import * as dotenv from "dotenv";
 import type { FastifyInstance, FastifyServerOptions } from "fastify";
 import Fastify from "fastify";
@@ -71,7 +71,7 @@ export const startServer = async (): Promise<FastifyInstance> => {
         await fastifyServer.cacheDb.ping();
 
         // await checkConnection();
-        await generateMigration();
+        // await generateMigration();
         await runMigrations();
 
         await fastifyServer.listen({ port: Number(port), host: "0.0.0.0" });

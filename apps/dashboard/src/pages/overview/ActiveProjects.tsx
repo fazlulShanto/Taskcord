@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { SingleProject } from '@/types/project';
+import { type SingleProject } from '@/types/project';
 import { Link } from '@tanstack/react-router';
 import { type FC } from 'react';
 
