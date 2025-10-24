@@ -1,5 +1,5 @@
 {
-  "name": "task-waku-dashboard",
+  "name": "dashboard",
   "private": true,
   "type": "module",
   "scripts": {
