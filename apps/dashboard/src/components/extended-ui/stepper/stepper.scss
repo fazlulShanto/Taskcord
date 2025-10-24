@@ -1,0 +1,45 @@
+.stepper-step-container {
+  .icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .single-step {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: 8px;
+    height: 36px;
+  }
+
+  .single-step:not(:last-child):after {
+    content: '';
+    background-color: var(--background);
+    border: 1px dashed #737373;
+    width: 0px;
+    height: 28px;
+    position: absolute;
+    top: 28px;
+  }
+
+  //  direction
+  :dir(ltr) .single-step:not(:last-child):after {
+    left: 9px;
+  }
+
+  :dir(rtl) .single-step:not(:last-child):after {
+    right: 9px;
+  }
+
+  .step-done:not(:last-child)::after {
+    border: 1px solid #16a34a;
+  }
+}

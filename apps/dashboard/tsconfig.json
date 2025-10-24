@@ -23,6 +23,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@queries/*": ["./src/queries/*"],
+      "@stores/*": ["./src/stores/*"],
+      "@ui/*": ["./src/components/ui/*"]
     }
   }
 }
