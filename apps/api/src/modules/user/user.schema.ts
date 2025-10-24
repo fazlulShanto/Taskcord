@@ -1,50 +1,52 @@
-import { z } from "zod";
-import { buildJsonSchemas } from "fastify-zod";
+import { zodSchemasToJSONSchema } from "@/utils/schemaHelper";
+import { z } from "zod/v4";
 
-export const meRouteSchema = {
-  response: {
-    200: z.object({
-      user: z.object({
-        id: z.string().uuid(),
-        discordId: z.string(),
-        fullName: z.string(),
-        nickName: z.string(),
-        avatar: z.string(),
-        email: z.string().email(),
-        lastAuth: z.date(),
-        isVerified: z.boolean(),
-        updatedAt: z.date(),
-        createdAt: z.date(),
-      }),
-    }),
-    404: z.object({
-      statusCode: z.literal(404),
-      error: z.string(),
-      message: z.string(),
-    }),
-  },
-};
+const meResponseSchema = z
+    .object({
+        user: z.object({
+            id: z.string().uuid(),
+            discordId: z.string(),
+            fullName: z.string(),
+            nickName: z.string(),
+            avatar: z.string(),
+            email: z.string().email(),
+            lastAuth: z.date(),
+            isVerified: z.boolean(),
+            updatedAt: z.date(),
+            createdAt: z.date(),
+        }),
+    })
+    .meta({ $id: "meResponse" });
 
-export const discordServerListRouteSchema = {
-  response: {
-    200: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        icon: z.string(),
-        banner: z.string(),
-        owner: z.boolean(),
-        permissions: z.string(),
-      }),
-    ),
-  },
-};
+const meErrorResponseSchema = z
+    .object({
+        statusCode: z.literal(404),
+        error: z.string(),
+        message: z.string(),
+    })
+    .meta({ $id: "meErrorResponse" });
 
-export const { schemas: userSchemas, $ref: userSchemaRef } = buildJsonSchemas(
-  {
-    meResponse: meRouteSchema.response[200],
-    meErrorResponse: meRouteSchema.response[404],
-    discordServerListResponse: discordServerListRouteSchema.response[200],
-  } as const,
-  { $id: "userSchema" },
-);
+const discordServerListResponseSchema = z
+    .array(
+        z.object({
+            id: z.string(),
+            name: z.string(),
+            icon: z.string(),
+            banner: z.string(),
+            owner: z.boolean(),
+            permissions: z.string(),
+        })
+    )
+    .meta({ $id: "discordServerListResponse" });
+
+export type MeResponse = z.infer<typeof meResponseSchema>;
+export type MeErrorResponse = z.infer<typeof meErrorResponseSchema>;
+export type DiscordServerListResponse = z.infer<
+    typeof discordServerListResponseSchema
+>;
+
+export const zodUserSchemas = zodSchemasToJSONSchema([
+    meResponseSchema,
+    meErrorResponseSchema,
+    discordServerListResponseSchema,
+]);

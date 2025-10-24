@@ -1,86 +1,91 @@
+import { DbNewLabel } from "@taskcord/database";
 import type { FastifyInstance } from "fastify";
 import LabelController from "./label.controller";
 import LabelService from "./label.service";
-import { labelSchemas, labelSchemaRef } from "./label.schema";
 
 export default function LabelsRoute(fastify: FastifyInstance) {
-  // Register schemas
-  for (const schema of labelSchemas) {
-    fastify.addSchema(schema);
-  }
+    const labelController = new LabelController(new LabelService());
 
-  const labelController = new LabelController(new LabelService());
-
-  // Create a new task label
-  fastify.post(
-    "/",
-    {
-      onRequest: [fastify.jwtAuth],
-      schema: {
-        tags: ["Task Labels"],
-        description: "Create a new task label",
-        body: labelSchemaRef("createLabelSchema"),
-        response: {
-          201: labelSchemaRef("labelResponse"),
-          400: labelSchemaRef("errorResponse"),
+    // Create a new task label
+    fastify.post<{ Body: DbNewLabel }>(
+        "/",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Task Labels"],
+                description: "Create a new task label",
+                body: { $ref: "createLabelSchema" },
+                response: {
+                    201: { $ref: "labelResponse" },
+                    400: { $ref: "labelErrorResponse" },
+                },
+            },
         },
-      },
-    },
-    // @ts-expect-error - this is a bug in fastify-zod
-    labelController.createLabel.bind(labelController),
-  );
+        labelController.createLabel.bind(labelController)
+    );
 
-  // Get all task labels of a project
-  fastify.get(
-    "/",
-    {
-      onRequest: [fastify.jwtAuth],
-      schema: {
-        tags: ["Task Labels"],
-        description: "Get all task labels of a project",
-        response: {
-          200: labelSchemaRef("labelsResponse"),
+    // Get all task labels of a project
+    fastify.get<{ Params: { projectId: string } }>(
+        "/:projectId",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Task Labels"],
+                description: "Get all task labels of a project",
+                params: {
+                    type: "object",
+                    properties: {
+                        projectId: { type: "string" },
+                    },
+                    required: ["projectId"],
+                },
+                response: {
+                    200: { $ref: "labelsResponse" },
+                },
+            },
         },
-      },
-    },
-    // @ts-expect-error - this is a bug in fastify-zod
-    labelController.getAllProjectLabels.bind(labelController),
-  );
+        labelController.getAllProjectLabels.bind(labelController)
+    );
 
-  // Update a task label
-  fastify.put(
-    "/:labelId",
-    {
-      onRequest: [fastify.jwtAuth],
-      schema: {
-        tags: ["Task Labels"],
-        description: "Update a task label",
-        body: labelSchemaRef("updateLabelSchema"),
-        response: {
-          200: labelSchemaRef("labelResponse"),
-          400: labelSchemaRef("errorResponse"),
+    // Update a task label
+    fastify.put<{ Params: { labelId: string }; Body: DbNewLabel }>(
+        "/:labelId",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Task Labels"],
+                description: "Update a task label",
+                body: { $ref: "updateLabelSchema" },
+                response: {
+                    200: { $ref: "labelResponse" },
+                    400: { $ref: "labelErrorResponse" },
+                },
+            },
         },
-      },
-    },
-    // @ts-expect-error - this is a bug in fastify-zod
-    labelController.updateLabel.bind(labelController),
-  );
+        labelController.updateLabel.bind(labelController)
+    );
 
-  // Delete a task label
-  fastify.delete(
-    "/:labelId",
-    {
-      onRequest: [fastify.jwtAuth],
-      schema: {
-        tags: ["Task Labels"],
-        description: "Delete a task label",
-        response: {
-          200: labelSchemaRef("labelResponse"),
-          400: labelSchemaRef("errorResponse"),
+    // Delete a task label
+    fastify.delete<{ Params: { labelId: string } }>(
+        "/:labelId",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Task Labels"],
+                description: "Delete a task label",
+                params: {
+                    type: "object",
+                    properties: {
+                        labelId: { type: "string" },
+                    },
+                    required: ["labelId"],
+                },
+                response: {
+                    200: { $ref: "labelResponse" },
+                    400: { $ref: "labelErrorResponse" },
+                },
+            },
         },
-      },
-    },
-    // @ts-expect-error - this is a bug in fastify-zod
-    labelController.deleteLabel.bind(labelController),
-  );
+        labelController.deleteLabel.bind(labelController)
+    );
 }
