@@ -8,5 +8,8 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },
-  "workbench.colorTheme": "Learn with Sumit - Professional"
+  "workbench.colorTheme": "Learn with Sumit - Professional",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+
 }

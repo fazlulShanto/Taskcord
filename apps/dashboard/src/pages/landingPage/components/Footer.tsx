@@ -37,7 +37,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2">
             <div className="mb-6 flex items-center gap-2">
-              <img src="/logo_128.png" alt="Task Waku" className="h-10 w-10" />
+              <img src="/applogo.svg" alt="Task Waku" className="h-10 w-10" />
               <span className="text-2xl font-bold text-white">Task Waku</span>
             </div>
             <p className="mb-6 text-gray-400">

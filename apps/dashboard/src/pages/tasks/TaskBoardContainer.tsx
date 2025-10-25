@@ -38,11 +38,7 @@ export const TaskBoardContainer: FC<TaskBoardContainerProps> = () => {
       <div className="flex items-center justify-between">
         <TabsList>
           {taskBoardTabs.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              className="data-[state=active]:bg-gray-700"
-              value={tab.value}
-            >
+            <TabsTrigger key={tab.value} value={tab.value}>
               {tab.label}
             </TabsTrigger>
           ))}

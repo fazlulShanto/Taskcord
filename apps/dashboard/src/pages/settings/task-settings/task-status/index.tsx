@@ -102,7 +102,7 @@ export const TaskStatusSettings: FC<TaskStatusSettingsProps> = () => {
                 Delete
               </Button>
             )}
-            <Button size="xs" onClick={() => setIsCreateModalOpen(true)}>
+            <Button size="sm" onClick={() => setIsCreateModalOpen(true)}>
               <PlusCircle className="size-4" />
               Create New Status
             </Button>

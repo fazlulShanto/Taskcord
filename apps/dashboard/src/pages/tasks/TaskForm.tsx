@@ -82,7 +82,7 @@ export const TaskForm = () => {
         />
 
         <div className="grid grid-cols-2 gap-4">
-          <FormField
+          {/* <FormField
             control={form.control}
             name="label"
             render={() => (
@@ -94,7 +94,7 @@ export const TaskForm = () => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <FormField
             control={form.control}

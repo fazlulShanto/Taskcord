@@ -9,8 +9,8 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo_128.png",
-      "type": "image/png",
+      "src": "applogo.svg",
+      "type": "image/svg+xml",
       "sizes": "128x128",
       "purpose": "any maskable"
     }
@@ -23,9 +23,9 @@
   "categories": ["productivity", "business"],
   "screenshots": [
     {
-      "src": "screenshot1.png",
+      "src": "applogo.svg",
       "sizes": "1280x720",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "platform": "wide",
       "label": "Taskcord Dashboard"
     }
@@ -38,7 +38,8 @@
       "url": "/new-task",
       "icons": [
         {
-          "src": "task-icon.png",
+           "src": "applogo.svg",
+          "type": "image/svg+xml",
           "sizes": "192x192"
         }
       ]

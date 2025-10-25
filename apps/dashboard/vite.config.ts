@@ -1,12 +1,23 @@
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import viteReact from '@vitejs/plugin-react';
+import { codeInspectorPlugin } from 'code-inspector-plugin';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [tanstackRouter({ autoCodeSplitting: true }), viteReact(), tailwindcss()],
+  define: {
+    'process.env': process.env,
+  },
+  plugins: [
+    codeInspectorPlugin({
+      bundler: 'vite',
+    }),
+    tanstackRouter({ autoCodeSplitting: true }),
+    viteReact(),
+    tailwindcss(),
+  ],
   server: {
     port: 5173,
     open: true,

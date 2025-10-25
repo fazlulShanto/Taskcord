@@ -36,8 +36,8 @@ export function LandingNav() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img src="/logo_128.png" alt="Task Waku Logo" className="h-10 w-10" />
-            <span className="text-xl font-bold text-white">Task Waku</span>
+            <img src="/applogo.svg" alt="Task Waku Logo" className="size-9" />
+            <span className="text-2xl font-bold text-white">Task Waku</span>
           </div>
 
           {/* Desktop Navigation */}

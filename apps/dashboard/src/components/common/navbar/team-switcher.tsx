@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/sidebar';
 import { useProjectListQuery } from '@/queries/useProjectQuery';
 import { useDashboardProjectStore } from '@/stores/usedashboardStore';
+import { AppLogo } from '../AppLogo';
 
 export function ProjectSwitcher() {
   const { data, isLoading, isError } = useProjectListQuery();
@@ -46,7 +47,7 @@ export function ProjectSwitcher() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground p-1"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-6 items-center justify-center rounded-lg">
-                <BoxSelect className="size-4" />
+                <AppLogo className="bg-sidebar" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{selectedProject?.title}</span>
