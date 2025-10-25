@@ -26,7 +26,7 @@ export const ProjectDashboard: FC<ProjectDashboardProps> = () => {
         <ProjectDashboardCard title="In Progress" statData={parseInt(454 * Math.random() + '')} />
         <ProjectDashboardCard title="Assigned" statData={parseInt(454 * Math.random() + '')} />
       </div>
-      <div className="flex flex-col justify-between gap-2">
+      <div className="flex flex-row w-full justify-between gap-2">
         <TaskPieChart
           data={{
             todo: 1,
@@ -34,7 +34,7 @@ export const ProjectDashboard: FC<ProjectDashboardProps> = () => {
             progress: 4,
           }}
         />
-        <div className="grow">
+        <div className="grow w-1/2">
           <ActivityChart />
         </div>
       </div>

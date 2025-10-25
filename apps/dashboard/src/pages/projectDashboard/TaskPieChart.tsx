@@ -52,7 +52,7 @@ export const TaskPieChart: FC<TaskPieChartProps> = ({ data = {}, total = 0 }) =>
     total || Object.values(data as TaskPieChartProps['data']).reduce((acc, curr) => acc + curr, 0);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col w-1/2">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-xl">Task Completion overview</CardTitle>
         <CardDescription></CardDescription>
@@ -103,8 +103,8 @@ export const TaskPieChart: FC<TaskPieChartProps> = ({ data = {}, total = 0 }) =>
               />
             </Pie>
             <ChartLegend
-              content={<ChartLegendContent nameKey="taskLabel" />}
-              className="-translate-y-2 gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+              content={<ChartLegendContent payload={"taskLabel"} nameKey="taskLabel" />}
+              className="-translate-y-2 gap-2 [*]:basis-1/4 [*]:justify-center"
             />
           </PieChart>
         </ChartContainer>

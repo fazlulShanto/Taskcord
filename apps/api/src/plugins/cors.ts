@@ -10,6 +10,7 @@ export default fastifyPlugin(
         await fastify.register(fastifyCors, {
             credentials: true,
             origin: corsFromEnv,
+            methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         });
     },
     { name: "cors", dependencies: ["env-config"] }

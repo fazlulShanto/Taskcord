@@ -8,7 +8,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Plus } from 'lucide-react';
-import { type FC } from 'react';
+import React, { type FC } from 'react';
 import { z } from 'zod';
 import { TaskForm } from './TaskForm';
 interface CreateTaskProps {
@@ -24,8 +24,10 @@ const _FormSchema = z.object({
 });
 
 export const CreateTask: FC<CreateTaskProps> = () => {
+  const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+
   return (
-    <Sheet modal={false}>
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen} modal={false}>
       <SheetTrigger asChild>
         <Button>
           <Plus
