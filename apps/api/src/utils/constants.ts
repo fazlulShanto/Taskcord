@@ -1,0 +1,68 @@
+// Bit flag constants for user permissions in the project management system EDIT= update,create
+export const PERMISSION_BIT_FLAGS = {
+    // Owner permission
+    OWNER: 1 << 0, // 1
+
+    // Project related permissions
+    READ_PROJECT: 1 << 1, // 2
+    MANAGE_PROJECT: 1 << 2, // 4
+    DELETE_PROJECT: 1 << 3, // 8
+
+    // Task related permissions
+    READ_TASK: 1 << 4, // 16
+    MANAGE_TASK: 1 << 5, // 32
+    DELETE_TASK: 1 << 6, // 64
+
+    // Label related permissions
+    READ_STATUSES: 1 << 7, // 128
+    MANAGE_STATUSES: 1 << 8, // 256
+    DELETE_STATUSES: 1 << 9, // 512
+
+    // User management permissions
+    READ_MEMBERS: 1 << 10, // 1024
+    MANAGE_MEMBERS: 1 << 11, // 2048
+    DELETE_MEMBERS: 1 << 12, // 4096
+    // manage kanban boards
+    READ_BOARDS: 1 << 13, // 8192
+    MANAGE_BOARDS: 1 << 14, // 16384
+    DELETE_BOARDS: 1 << 15, // 32768
+    // reporting permissions
+    READ_REPORTS: 1 << 16, // 65536
+    MANAGE_REPORTS: 1 << 17, // 131072
+    DELETE_REPORTS: 1 << 18, // 262144
+    // log permissions
+    READ_LOGS: 1 << 19, // 524288
+    DELETE_LOGS: 1 << 20, // 1048576
+};
+
+export const DEFAULT_MEMBER_PERMISSIONS =
+    PERMISSION_BIT_FLAGS.READ_PROJECT |
+    PERMISSION_BIT_FLAGS.READ_TASK |
+    PERMISSION_BIT_FLAGS.READ_MEMBERS |
+    PERMISSION_BIT_FLAGS.READ_BOARDS |
+    PERMISSION_BIT_FLAGS.READ_STATUSES;
+
+export const ADMIN_MEMBER_PERMISSIONS =
+    PERMISSION_BIT_FLAGS.READ_PROJECT |
+    PERMISSION_BIT_FLAGS.READ_TASK |
+    PERMISSION_BIT_FLAGS.READ_STATUSES |
+    PERMISSION_BIT_FLAGS.READ_MEMBERS |
+    // Manage permissions
+    PERMISSION_BIT_FLAGS.MANAGE_PROJECT |
+    PERMISSION_BIT_FLAGS.MANAGE_TASK |
+    PERMISSION_BIT_FLAGS.MANAGE_STATUSES |
+    PERMISSION_BIT_FLAGS.MANAGE_MEMBERS |
+    // Delete permissions
+    PERMISSION_BIT_FLAGS.DELETE_STATUSES |
+    PERMISSION_BIT_FLAGS.DELETE_TASK |
+    PERMISSION_BIT_FLAGS.DELETE_MEMBERS |
+    // reports
+    PERMISSION_BIT_FLAGS.READ_REPORTS |
+    PERMISSION_BIT_FLAGS.MANAGE_REPORTS |
+    // logs
+    PERMISSION_BIT_FLAGS.READ_LOGS |
+    PERMISSION_BIT_FLAGS.DELETE_LOGS |
+    // boards
+    PERMISSION_BIT_FLAGS.READ_BOARDS |
+    PERMISSION_BIT_FLAGS.MANAGE_BOARDS |
+    PERMISSION_BIT_FLAGS.DELETE_BOARDS;

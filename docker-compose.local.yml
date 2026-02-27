@@ -34,7 +34,7 @@ services:
       timeout: 5s
       retries: 10
     ports:
-      - "6385:6379"
+      - 6385:6379
 
   # # API Service
   api:
@@ -72,10 +72,8 @@ services:
       - /app/node_modules  # Prevent overwriting node_modules
     env_file:
       - ./.env.local
-    environment:
-      - PG_DB_URL_LOCAL=postgresql://postgres:postgres@db:5432/taskcord
     depends_on:
-      - db
+      - api
       - redis
 
 volumes:

@@ -9,7 +9,7 @@ RUN npm install -g pnpm
 # Copy lockfiles and package.json files first for better layer caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/
-COPY apps/dashboard-client/package.json ./apps/dashboard-client/
+COPY apps/dashboard/package.json ./apps/dashboard/
 COPY apps/discord-bot/package.json ./apps/discord-bot/
 COPY packages/ ./packages/
 
