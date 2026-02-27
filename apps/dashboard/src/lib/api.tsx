@@ -40,6 +40,16 @@ export const APIs = {
     deleteLabelsBulk: (projectId: string) =>
       `${API_URL}/api/edge/projects/${projectId}/labels/bulk`,
   },
+  taskType: {
+    getAllTaskTypes: (projectId: string) => `${API_URL}/api/edge/projects/${projectId}/task-types`,
+    createTaskType: (projectId: string) => `${API_URL}/api/edge/projects/${projectId}/task-types`,
+    updateTaskType: (projectId: string, taskTypeId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/task-types/${taskTypeId}`,
+    deleteTaskType: (projectId: string, taskTypeId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/task-types/${taskTypeId}`,
+    deleteTaskTypesBulk: (projectId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/task-types/bulk`,
+  },
   utility: {
     cookies: () => `${API_URL}/api/stable/utility/cookie-test`,
   },

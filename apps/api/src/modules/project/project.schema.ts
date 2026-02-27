@@ -7,6 +7,7 @@ const projectCore = {
     description: z.string().nullable(),
     creatorId: z.string().uuid(),
     managerId: z.string(),
+    projectType: z.string(),
     status: z.string().nullable(),
     createdAt: z.date(),
     logo: z.string().nullable(),
@@ -20,6 +21,9 @@ const createProjectSchema = z
         title: z.string(),
         description: z.string(),
         discordServerId: z.string(),
+        projectType: z
+            .enum(["general", "software", "marketing", "design"])
+            .optional(),
     })
     .meta({ $id: "createProjectSchema" });
 

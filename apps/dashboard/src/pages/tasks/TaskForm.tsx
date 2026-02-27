@@ -8,11 +8,19 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useTaskTypesQuery } from '@/queries/useTaskTypeQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { PlayGround } from '../playground';
 
 // Form Schema based on Task type
 const taskFormSchema = z.object({
@@ -30,6 +38,9 @@ const taskFormSchema = z.object({
 type TaskFormValues = z.infer<typeof taskFormSchema>;
 
 export const TaskForm = () => {
+  const { projectId = '' } = useParams({ strict: false });
+  const { data: taskTypeData } = useTaskTypesQuery(projectId);
+
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
     defaultValues: {
@@ -103,7 +114,18 @@ export const TaskForm = () => {
               <FormItem>
                 <FormLabel>Issue Type</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter issue type" {...field} />
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select issue type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(taskTypeData?.data.taskTypes ?? []).map((taskType) => (
+                        <SelectItem key={taskType.id} value={taskType.name}>
+                          {taskType.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

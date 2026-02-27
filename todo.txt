@@ -1,4 +1,13 @@
-- [x] no need of extra milestone_tasks table, instead add a milestone_id field in task table
-- [x] no need of task_assignees table, instead add a field assignees in task table
-- [x] no need statuses & labels table. instead keep labels and add a boolean flag that can be toggle to if a label can be used as status too
+| Project Type              | Best For                                                       | Key Features Used                                                  |
+| ------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Software Development**  | Agile teams, sprints, bug tracking                             | Kanban boards, labels for priority, custom fields for story points |
+| **Content Production**    | Editorial calendars, blog management, video production         | Calendar view, due dates, checklists for publishing workflow       |
+| **Marketing & Campaigns** | Campaign planning, social media scheduling, event coordination | Timeline view, labels for channels, attachments for assets         |
+| **HR & Recruitment**      | Hiring pipelines, onboarding processes                         | Checklists, template cards, due dates for milestones               |
+| **Sales & CRM**           | Lead tracking, deal pipelines, customer onboarding             | Custom fields for deal value, labels for stages                    |
+| **Operations & IT**       | Help desk tickets, equipment requests, maintenance             | Automation (Butler), forms for intake, labels for urgency          |
+| **Event Planning**        | Conferences, weddings, corporate events                        | Checklists, due dates, attachments for vendor contracts            |
+| **Education & Research**  | Course planning, thesis management, research projects          | Labels for subjects, checklists for modules                        |
+| **Personal Productivity** | Goal tracking, habit building, life admin                      | Simple lists, labels for categories, due dates                     |
+
 

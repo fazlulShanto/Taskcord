@@ -24,3 +24,12 @@ export type TaskStatus = {
   creatorId: string; // UUID
   order: number;
 };
+
+export type TaskType = {
+  id: string;
+  name: string;
+  description: string;
+  projectId: string;
+  creatorId: string;
+  order: number;
+};

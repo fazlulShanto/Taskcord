@@ -5,7 +5,12 @@ import { devtools } from 'zustand/middleware';
 type ProjectCreationStore = {
   projectName: string;
   projectDescription: string;
-  updateProjectDetails: (values: { projectName: string; projectDescription: string }) => void;
+  projectType: 'general' | 'software' | 'marketing' | 'design';
+  updateProjectDetails: (values: {
+    projectName: string;
+    projectDescription: string;
+    projectType: 'general' | 'software' | 'marketing' | 'design';
+  }) => void;
   serverList: UserServerData[];
   selectedServer: UserServerData | null;
   updateSelectedServer: (server: UserServerData | null) => void;
@@ -17,6 +22,7 @@ export const useProjectCreation = create<ProjectCreationStore>()(
     (set) => ({
       projectName: '',
       projectDescription: '',
+      projectType: 'general',
       serverList: [],
       selectedServer: null,
       updateServerList: (serverList: UserServerData[]) => {
@@ -31,7 +37,7 @@ export const useProjectCreation = create<ProjectCreationStore>()(
           selectedServer: server,
         }));
       },
-      updateProjectDetails: (values: ProjectCreationStore['updateProjectDetails']) => {
+      updateProjectDetails: (values) => {
         set((oldState) => ({
           ...oldState,
           ...values,

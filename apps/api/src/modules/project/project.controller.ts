@@ -12,7 +12,7 @@ export default class ProjectController {
     // Create a new project
     public async createProject(
         request: FastifyRequest<{ Body: CreateProject }>,
-        reply: FastifyReply
+        reply: FastifyReply,
     ) {
         const userDiscordId = request.jwtUser.discordId;
         const projectData = request.body;
@@ -20,6 +20,7 @@ export default class ProjectController {
         const project = await this.projectService.createProject(userDiscordId, {
             title: projectData.title,
             description: projectData.description,
+            projectType: projectData.projectType ?? "general",
             creatorId: request.jwtUser.id,
             managerId: userDiscordId,
             discordServerId: request.body.discordServerId,
@@ -47,7 +48,7 @@ export default class ProjectController {
 
     public async getAllProjects(request: FastifyRequest, reply: FastifyReply) {
         const projects = await this.projectService.getAllProjects(
-            request.jwtUser.id
+            request.jwtUser.id,
         );
         return reply.send({ projects });
     }
@@ -107,6 +108,10 @@ export default class ProjectController {
 export const createProjectSchema = z.object({
     title: z.string(),
     description: z.string().optional(),
+    projectType: z
+        .enum(["general", "software", "marketing", "design"])
+        .optional()
+        .default("general"),
     managerId: z.string(),
     discordServerId: z.string(),
     status: z.string().optional(),

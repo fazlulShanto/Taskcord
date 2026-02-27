@@ -3,6 +3,7 @@ import { fastifyPlugin } from "fastify-plugin";
 import auth from "./auth";
 import labels from "./labels";
 import project from "./project";
+import taskType from "./task-type";
 import userRoutes from "./user";
 import utility from "./utility";
 
@@ -37,6 +38,13 @@ export default fastifyPlugin(
                 getOptionsWithPrefix(
                     options,
                     "/edge/projects/:projectId/labels",
+                ),
+            ),
+            fastify.register(
+                taskType,
+                getOptionsWithPrefix(
+                    options,
+                    "/edge/projects/:projectId/task-types",
                 ),
             ),
         ]);

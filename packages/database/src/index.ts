@@ -117,3 +117,27 @@ export {
     type DbLabel,
     type DbNewLabel,
 } from "./models/label.model";
+
+//TASK TYPE MODEL
+export {
+    TaskTypeDal,
+    taskTypeModel,
+    type DbNewTaskType,
+    type DbTaskType,
+} from "./models/task-type.model";
+
+//PROJECT ROLE MODEL
+export {
+    ProjectDefinedRolesDal,
+    projectDefinedRolesModel,
+    type DbNewProjectDefinedRole,
+    type DbProjectDefinedRole,
+} from "./models/project-defined-roles.model";
+
+//PROJECT USER ROLE ASSIGNMENT MODEL
+export {
+    ProjectRolesDal,
+    projectRolesModel,
+    type DbNewProjectRole,
+    type DbProjectRole,
+} from "./models/project-roles.model";

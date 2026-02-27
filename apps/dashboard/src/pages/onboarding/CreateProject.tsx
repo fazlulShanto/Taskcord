@@ -9,6 +9,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useProjectCreation } from '@/stores/useProjectCreation';
@@ -19,6 +26,7 @@ import { z } from 'zod';
 const projectDetailsFormSchema = z.object({
   projectName: z.string().min(1, 'Project name is required'),
   projectDescription: z.string().min(1, 'Project description is required'),
+  projectType: z.enum(['general', 'software', 'marketing', 'design']),
 });
 
 export interface ProjectDetailsProps {
@@ -29,12 +37,14 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({ onNext }) => {
   const updateProjectDetails = useProjectCreation((state) => state.updateProjectDetails);
   const projectName = useProjectCreation((state) => state.projectName);
   const projectDescription = useProjectCreation((state) => state.projectDescription);
+  const projectType = useProjectCreation((state) => state.projectType);
 
   const formInstance = useForm({
     resolver: zodResolver(projectDetailsFormSchema),
     defaultValues: {
       projectName: projectName,
       projectDescription: projectDescription,
+      projectType,
     },
     mode: 'onChange',
   });
@@ -79,6 +89,33 @@ export const ProjectDetails: FC<ProjectDetailsProps> = ({ onNext }) => {
                   <Textarea placeholder="Enter project description" {...field} />
                 </FormControl>
                 <FormDescription>write details about the project.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={formInstance.control}
+            name="projectType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Type</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select project type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="general">General</SelectItem>
+                    <SelectItem value="software">Software</SelectItem>
+                    <SelectItem value="marketing">Marketing</SelectItem>
+                    <SelectItem value="design">Design</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Task type defaults are generated from this project type.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

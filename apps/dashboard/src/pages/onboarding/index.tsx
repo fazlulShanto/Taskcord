@@ -1,12 +1,12 @@
-import { CheckCircle } from 'lucide-react';
-import { ProjectDetails } from './CreateProject';
 import { Stepper } from '@/components/extended-ui/stepper/stepper';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { CheckCircle } from 'lucide-react';
 import { useState } from 'react';
 import { ConnectGithub } from './ConnectGithub';
-import { InviteBot } from './InviteBot';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { ProjectDetails } from './CreateProject';
 import { GreetingsStep } from './GreetingsStep';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { InviteBot } from './InviteBot';
 
 const steps = [
   {
@@ -63,7 +63,7 @@ export default function OnboardingPage() {
 
   return (
     <Dialog open modal={false}>
-      <DialogContent className="flex h-[80vh] max-w-4xl gap-0 overflow-hidden p-0 [&>button]:hidden">
+      <DialogContent className="flex h-[80vh] gap-0 overflow-hidden p-0 sm:max-w-4xl [&>button]:hidden">
         <div className="border-r-borderPrimary-disable min-w-fit border-0 p-3 sm:border-r">
           <Stepper
             steps={formSteps}

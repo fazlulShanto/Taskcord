@@ -14,11 +14,13 @@ export const ConnectGithub: FC<ConnectGithubProps> = () => {
   const projectName = useProjectCreation((state) => state.projectName);
   const selectedServer = useProjectCreation((state) => state.selectedServer);
   const projectDescription = useProjectCreation((state) => state.projectDescription);
+  const projectType = useProjectCreation((state) => state.projectType);
 
   const handleCreateProject = async () => {
     const projectData = {
       title: projectName,
       description: projectDescription,
+      projectType,
       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       discordServerId: selectedServer?.id!,
     };
