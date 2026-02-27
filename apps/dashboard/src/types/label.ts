@@ -7,6 +7,8 @@ export interface Label {
   projectId: string;
   label: string;
   color: string;
+  isStatus: boolean;
+  order: number;
 }
 
 export type LabelCreate = Pick<Label, 'label' | 'color' | 'description'>;

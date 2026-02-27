@@ -1,5 +1,6 @@
 import type { DbNewLabel } from "@taskcord/database";
 import type { FastifyReply, FastifyRequest } from "fastify";
+import type { CreateLabel, UpdateLabel } from "./label.schema";
 import type LabelService from "./label.service";
 
 export default class LabelController {
@@ -11,10 +12,17 @@ export default class LabelController {
 
     // Create a new label
     public async createLabel(
-        request: FastifyRequest<{ Body: DbNewLabel }>,
-        reply: FastifyReply
+        request: FastifyRequest<{
+            Body: CreateLabel;
+            Params: { projectId: string };
+        }>,
+        reply: FastifyReply,
     ) {
-        const labelData = request.body;
+        const labelData: DbNewLabel = {
+            ...request.body,
+            projectId: request.params.projectId,
+            creatorId: request.jwtUser.id,
+        };
 
         const label = await this.labelService.createLabel(labelData);
 
@@ -23,10 +31,10 @@ export default class LabelController {
 
     public async getAllProjectLabels(
         request: FastifyRequest<{ Params: { projectId: string } }>,
-        reply: FastifyReply
+        reply: FastifyReply,
     ) {
         const labels = await this.labelService.getAllLabelsByProjectId(
-            request.params.projectId
+            request.params.projectId,
         );
         return reply.send({ taskLabels: labels });
     }
@@ -34,25 +42,34 @@ export default class LabelController {
     public async updateLabel(
         request: FastifyRequest<{
             Params: { labelId: string };
-            Body: DbNewLabel;
+            Body: UpdateLabel;
         }>,
-        reply: FastifyReply
+        reply: FastifyReply,
     ) {
-        const labelData = request.body;
         const label = await this.labelService.updateLabel(
             request.params.labelId,
-            labelData
+            request.body,
         );
         return reply.send({ taskLabel: label });
     }
 
     public async deleteLabel(
         request: FastifyRequest<{ Params: { labelId: string } }>,
-        reply: FastifyReply
+        reply: FastifyReply,
     ) {
         const label = await this.labelService.deleteLabel(
-            request.params.labelId
+            request.params.labelId,
         );
         return reply.send({ taskLabel: label });
+    }
+
+    public async deleteLabelBulk(
+        request: FastifyRequest<{ Body: { ids: string[] } }>,
+        reply: FastifyReply,
+    ) {
+        const labels = await this.labelService.deleteLabelBulk(
+            request.body.ids,
+        );
+        return reply.send({ taskLabels: labels });
     }
 }

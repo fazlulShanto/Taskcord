@@ -8,7 +8,7 @@ import { getCurrentEnv, getPostgresUrl } from "./utils/env";
 const connectionString = getPostgresUrl();
 if (!connectionString) {
     throw new Error(
-        "Database URL is not defined. ENV =>" + process.env.NODE_ENV
+        "Database URL is not defined. ENV =>" + process.env.NODE_ENV,
     );
 }
 
@@ -42,7 +42,7 @@ export const runMigrations = async () => {
     try {
         const migrationsPath = resolve(
             __dirname,
-            "../drizzle"
+            "../drizzle",
             // "/app/packages/database/drizzle"
         );
 
@@ -117,10 +117,3 @@ export {
     type DbLabel,
     type DbNewLabel,
 } from "./models/label.model";
-
-export {
-    StatusDal,
-    statusModel,
-    type DbNewStatus,
-    type DbStatus,
-} from "./models/status.model";

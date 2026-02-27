@@ -1,0 +1,4 @@
+- [x] no need of extra milestone_tasks table, instead add a milestone_id field in task table
+- [x] no need of task_assignees table, instead add a field assignees in task table
+- [x] no need statuses & labels table. instead keep labels and add a boolean flag that can be toggle to if a label can be used as status too
+

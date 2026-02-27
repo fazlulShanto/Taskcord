@@ -9,7 +9,7 @@
     "dev": "turbo run dev",
     "dev:api": "turbo run dev --filter=api",
     "dev:bot": "turbo run dev --filter=bot",
-    "dev:dashboard": "turbo run dev --filter=taskcord-dashboard",
+    "dev:dashboard": "turbo run dev --filter=dashboard",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "test": "turbo run test",

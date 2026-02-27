@@ -1,13 +1,13 @@
-import { DbNewLabel } from "@taskcord/database";
 import type { FastifyInstance } from "fastify";
 import LabelController from "./label.controller";
+import type { CreateLabel, UpdateLabel } from "./label.schema";
 import LabelService from "./label.service";
 
 export default function LabelsRoute(fastify: FastifyInstance) {
     const labelController = new LabelController(new LabelService());
 
     // Create a new task label
-    fastify.post<{ Body: DbNewLabel }>(
+    fastify.post<{ Body: CreateLabel; Params: { projectId: string } }>(
         "/",
         {
             onRequest: [fastify.jwtAuth],
@@ -21,12 +21,12 @@ export default function LabelsRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        labelController.createLabel.bind(labelController)
+        labelController.createLabel.bind(labelController),
     );
 
     // Get all task labels of a project
     fastify.get<{ Params: { projectId: string } }>(
-        "/:projectId",
+        "/",
         {
             onRequest: [fastify.jwtAuth],
             schema: {
@@ -44,11 +44,11 @@ export default function LabelsRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        labelController.getAllProjectLabels.bind(labelController)
+        labelController.getAllProjectLabels.bind(labelController),
     );
 
     // Update a task label
-    fastify.put<{ Params: { labelId: string }; Body: DbNewLabel }>(
+    fastify.put<{ Params: { labelId: string }; Body: UpdateLabel }>(
         "/:labelId",
         {
             onRequest: [fastify.jwtAuth],
@@ -62,7 +62,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        labelController.updateLabel.bind(labelController)
+        labelController.updateLabel.bind(labelController),
     );
 
     // Delete a task label
@@ -86,6 +86,25 @@ export default function LabelsRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        labelController.deleteLabel.bind(labelController)
+        labelController.deleteLabel.bind(labelController),
+    );
+
+    // Delete multiple task labels
+    fastify.delete<{ Body: { ids: string[] } }>(
+        "/bulk",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Task Labels"],
+                description: "Delete multiple task labels",
+                body: {
+                    type: "object",
+                    properties: {
+                        ids: { type: "array", items: { type: "string" } },
+                    },
+                },
+            },
+        },
+        labelController.deleteLabelBulk.bind(labelController),
     );
 }

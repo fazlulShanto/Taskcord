@@ -8,6 +8,8 @@ const ProjectTaskLabel = {
     description: z.string(),
     projectId: z.string().uuid(),
     creatorId: z.string().uuid(),
+    isStatus: z.boolean(),
+    order: z.number().int(),
 };
 
 const createLabelSchema = z
@@ -15,6 +17,8 @@ const createLabelSchema = z
         label: z.string(),
         color: z.string(),
         description: z.string(),
+        isStatus: z.boolean().optional(),
+        order: z.number().int().min(0).optional(),
         // projectId: z.string().uuid(),
         // creatorId: z.string().uuid(),
     })
@@ -25,6 +29,8 @@ const updateLabelSchema = z
         label: z.string().optional(),
         color: z.string().optional(),
         description: z.string().optional(),
+        isStatus: z.boolean().optional(),
+        order: z.number().int().min(0).optional(),
         // projectId: z.string().uuid().optional(),
         // creatorId: z.string().uuid().optional(),
     })

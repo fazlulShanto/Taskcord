@@ -37,16 +37,10 @@ export const APIs = {
       `${API_URL}/api/edge/projects/${projectId}/labels/${labelId}`,
     deleteLabel: (projectId: string, labelId: string) =>
       `${API_URL}/api/edge/projects/${projectId}/labels/${labelId}`,
+    deleteLabelsBulk: (projectId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/labels/bulk`,
   },
   utility: {
     cookies: () => `${API_URL}/api/stable/utility/cookie-test`,
-  },
-  taskStatus: {
-    createTaskStatus: (projectId: string) => `${API_URL}/api/edge/projects/${projectId}/statuses`,
-    updateTaskStatus: (projectId: string, taskStatusId: string) =>
-      `${API_URL}/api/edge/projects/${projectId}/statuses/${taskStatusId}`,
-    deleteTaskStatus: (projectId: string) =>
-      `${API_URL}/api/edge/projects/${projectId}/statuses/bulk`,
-    getAllTaskStatuses: (projectId: string) => `${API_URL}/api/edge/projects/${projectId}/statuses`,
   },
 };

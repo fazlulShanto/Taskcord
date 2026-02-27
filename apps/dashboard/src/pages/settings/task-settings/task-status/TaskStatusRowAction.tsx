@@ -44,7 +44,7 @@ export const TaskStatusRowAction: FC<TaskStatusRowActionProps> = ({ data }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setIsDeleteModalOpen(true)}
-            className="bg-destructive hover:!bg-destructive/90"
+            className="bg-destructive hover:bg-destructive/90!"
           >
             <Trash className="h-4 w-4" />
             Delete
