@@ -140,4 +140,5 @@ export {
     projectRolesModel,
     type DbNewProjectRole,
     type DbProjectRole,
+    type DbProjectUserRoleRow,
 } from "./models/project-roles.model";

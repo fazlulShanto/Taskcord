@@ -74,16 +74,24 @@ export const startServer = async (): Promise<FastifyInstance> => {
         // await generateMigration();
         await runMigrations();
 
+        // seed user
+        // SeedUserAndRoles("019c9e7b-c5a5-74b2-acfc-ec7319d5c943").catch(
+        //     (err) => {
+        //         console.error("❌ Seeding failed:", err);
+        //         process.exit(1);
+        //     },
+        // );
+
         await fastifyServer.listen({ port: Number(port), host: "0.0.0.0" });
 
         const buildEnd = performance.now();
         console.log(
-            `→ 📚 Check out API docs at http://localhost:${port}/api/docs`
+            `→ 📚 Check out API docs at http://localhost:${port}/api/docs`,
         );
         console.log(
             `🚀🚀 Server is ready to accept requests in ${(
                 buildEnd - buildStart
-            ).toFixed(2)} ms`
+            ).toFixed(2)} ms`,
         );
         return fastifyServer;
     } catch (e) {

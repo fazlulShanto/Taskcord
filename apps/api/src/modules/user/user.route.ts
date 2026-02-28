@@ -5,7 +5,7 @@ import UserService from "./user.service";
 
 export default function AuthRoute(fastify: FastifyInstance) {
     const userController = new UserController(
-        new UserService(new AuthService())
+        new UserService(new AuthService()),
     );
 
     fastify.get(
@@ -21,7 +21,7 @@ export default function AuthRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        userController.me.bind(userController)
+        userController.me.bind(userController),
     );
 
     fastify.get(
@@ -37,7 +37,23 @@ export default function AuthRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        userController.getUserDiscordServerList.bind(userController)
+        userController.getUserDiscordServerList.bind(userController),
+    );
+
+    fastify.get<{ Params: { projectId: string } }>(
+        "/projects/:projectId",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["User"],
+                description: "Get project users with their roles",
+                params: { $ref: "userProjectIdParams" },
+                response: {
+                    200: { $ref: "projectUsersWithRolesResponse" },
+                },
+            },
+        },
+        userController.getUsersByProjectId.bind(userController),
     );
 
     if (["local", "staging"].includes(process.env.NODE_ENV)) {
@@ -56,7 +72,7 @@ export default function AuthRoute(fastify: FastifyInstance) {
                     },
                 },
             },
-            userController.createDummyUsers.bind(userController)
+            userController.createDummyUsers.bind(userController),
         );
     }
 }

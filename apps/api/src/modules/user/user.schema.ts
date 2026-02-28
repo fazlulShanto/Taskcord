@@ -35,18 +35,52 @@ const discordServerListResponseSchema = z
             banner: z.string(),
             owner: z.boolean(),
             permissions: z.string(),
-        })
+        }),
     )
     .meta({ $id: "discordServerListResponse" });
+
+const userProjectIdParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+    })
+    .meta({ $id: "userProjectIdParams" });
+
+const projectUsersWithRolesResponseSchema = z
+    .object({
+        users: z.array(
+            z.object({
+                id: z.string().uuid(),
+                discordId: z.string(),
+                fullName: z.string().nullable(),
+                nickName: z.string().nullable(),
+                avatar: z.string().nullable(),
+                email: z.string().nullable(),
+                roles: z.array(
+                    z.object({
+                        id: z.string().uuid(),
+                        name: z.string(),
+                        permissionCode: z.string(),
+                    }),
+                ),
+            }),
+        ),
+    })
+    .meta({ $id: "projectUsersWithRolesResponse" });
 
 export type MeResponse = z.infer<typeof meResponseSchema>;
 export type MeErrorResponse = z.infer<typeof meErrorResponseSchema>;
 export type DiscordServerListResponse = z.infer<
     typeof discordServerListResponseSchema
 >;
+export type UserProjectIdParams = z.infer<typeof userProjectIdParamsSchema>;
+export type ProjectUsersWithRolesResponse = z.infer<
+    typeof projectUsersWithRolesResponseSchema
+>;
 
 export const zodUserSchemas = zodSchemasToJSONSchema([
     meResponseSchema,
     meErrorResponseSchema,
     discordServerListResponseSchema,
+    userProjectIdParamsSchema,
+    projectUsersWithRolesResponseSchema,
 ]);

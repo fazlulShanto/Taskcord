@@ -22,6 +22,7 @@ export const APIs = {
   user: {
     get: (userId: string) => `${API_URL}/api/edge/users/${userId}`,
     userGuilds: () => `${API_URL}/api/edge/users/discord/guilds`,
+    projectUserRoles: (projectId: string) => `${API_URL}/api/edge/users/projects/${projectId}`,
   },
   discord: {
     guilds: () => `${API_URL}/api/edge/users/discord/guilds`,

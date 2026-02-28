@@ -2,54 +2,65 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import type UserService from "./user.service";
 
 export default class UserController {
-  private userService: UserService;
+    private userService: UserService;
 
-  constructor(userService: UserService) {
-    this.userService = userService;
-  }
-
-  public async me(request: FastifyRequest, reply: FastifyReply) {
-    const userDiscordId = request.jwtUser.discordId;
-
-    const dbUser = await this.userService.me(userDiscordId);
-
-    if (!dbUser) {
-      return reply.notFound();
-    }
-    return reply.send({
-      user: dbUser,
-    });
-  }
-
-  public async getUserDiscordServerList(
-    request: FastifyRequest,
-    reply: FastifyReply,
-  ) {
-    const userDiscordId = request.jwtUser.discordId;
-
-    const dbUser = await this.userService.me(userDiscordId);
-
-    if (!dbUser) {
-      return reply.notFound();
+    constructor(userService: UserService) {
+        this.userService = userService;
     }
 
-    const userAccessToken = dbUser.discordAccessToken;
+    public async me(request: FastifyRequest, reply: FastifyReply) {
+        const userDiscordId = request.jwtUser.discordId;
 
-    if (!userAccessToken) {
-      return reply.notFound();
+        const dbUser = await this.userService.me(userDiscordId);
+
+        if (!dbUser) {
+            return reply.notFound();
+        }
+        return reply.send({
+            user: dbUser,
+        });
     }
-    const discordServerList =
-      await this.userService.getUserDiscordServerList(userAccessToken);
 
-    return reply.send(discordServerList);
-  }
+    public async getUserDiscordServerList(
+        request: FastifyRequest,
+        reply: FastifyReply,
+    ) {
+        const userDiscordId = request.jwtUser.discordId;
 
-  public async createDummyUsers(
-    request: FastifyRequest<{ Querystring: { userCount?: number } }>,
-    reply: FastifyReply,
-  ) {
-    const userCount = request.query.userCount || 10;
-    const createdUsers = await this.userService.createDummyUser(userCount);
-    return reply.send(createdUsers);
-  }
+        const dbUser = await this.userService.me(userDiscordId);
+
+        if (!dbUser) {
+            return reply.notFound();
+        }
+
+        const userAccessToken = dbUser.discordAccessToken;
+
+        if (!userAccessToken) {
+            return reply.notFound();
+        }
+        const discordServerList =
+            await this.userService.getUserDiscordServerList(userAccessToken);
+
+        return reply.send(discordServerList);
+    }
+
+    public async createDummyUsers(
+        request: FastifyRequest<{ Querystring: { userCount?: number } }>,
+        reply: FastifyReply,
+    ) {
+        const userCount = request.query.userCount || 10;
+        const createdUsers = await this.userService.createDummyUser(userCount);
+        return reply.send(createdUsers);
+    }
+
+    public async getUsersByProjectId(
+        request: FastifyRequest<{ Params: { projectId: string } }>,
+        reply: FastifyReply,
+    ) {
+        const users = await this.userService.getUsersByProjectIdWithRoles(
+            request.params.projectId,
+        );
+
+        return reply.send({ users });
+    }
 }
