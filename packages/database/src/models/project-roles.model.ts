@@ -64,6 +64,21 @@ export class ProjectRolesDal {
             .where(eq(projectRolesModel.projectId, projectId));
     }
 
+    static async getUserRolesByProjectId(
+        projectId: string,
+        userId: string,
+    ): Promise<DbProjectRole[]> {
+        return await db
+            .select()
+            .from(projectRolesModel)
+            .where(
+                and(
+                    eq(projectRolesModel.projectId, projectId),
+                    eq(projectRolesModel.userId, userId),
+                ),
+            );
+    }
+
     static async getProjectUsersWithRoles(
         projectId: string,
     ): Promise<DbProjectUserRoleRow[]> {

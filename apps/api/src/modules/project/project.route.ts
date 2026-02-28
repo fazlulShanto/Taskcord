@@ -1,5 +1,10 @@
 import type { FastifyInstance } from "fastify";
 import ProjectController, { CreateProject } from "./project.controller";
+import type {
+    CreateProjectInvite,
+    ProjectInviteIdParams,
+    ProjectInviteParams,
+} from "./project.schema";
 import ProjectService from "./project.service";
 
 export default function ProjectRoute(fastify: FastifyInstance) {
@@ -22,7 +27,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        projectController.createProject.bind(projectController)
+        projectController.createProject.bind(projectController),
     );
 
     // Get all projects
@@ -38,7 +43,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        projectController.getAllProjects.bind(projectController)
+        projectController.getAllProjects.bind(projectController),
     );
 
     // Get a specific project by ID
@@ -56,7 +61,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        projectController.getProject.bind(projectController)
+        projectController.getProject.bind(projectController),
     );
 
     // Update a project
@@ -75,7 +80,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        projectController.updateProject.bind(projectController)
+        projectController.updateProject.bind(projectController),
     );
 
     fastify.get(
@@ -91,7 +96,7 @@ export default function ProjectRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        projectController.isBotInServer.bind(projectController)
+        projectController.isBotInServer.bind(projectController),
     );
 
     // Delete a project
@@ -109,6 +114,65 @@ export default function ProjectRoute(fastify: FastifyInstance) {
                 },
             },
         },
-        projectController.deleteProject.bind(projectController)
+        projectController.deleteProject.bind(projectController),
+    );
+
+    fastify.post<{
+        Params: ProjectInviteParams;
+        Body: CreateProjectInvite;
+    }>(
+        "/:projectId/invitations",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Projects"],
+                description: "Create a project invitation link",
+                params: { $ref: "projectInviteParamsSchema" },
+                body: { $ref: "createProjectInviteSchema" },
+                response: {
+                    201: { $ref: "projectInviteCreateResponse" },
+                    400: { $ref: "projectErrorResponse" },
+                },
+            },
+        },
+        projectController.createProjectInvite.bind(projectController),
+    );
+
+    fastify.get<{
+        Params: ProjectInviteParams;
+    }>(
+        "/:projectId/invitations",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Projects"],
+                description: "List project invitation links",
+                params: { $ref: "projectInviteParamsSchema" },
+                response: {
+                    200: { $ref: "projectInvitesResponse" },
+                    400: { $ref: "projectErrorResponse" },
+                },
+            },
+        },
+        projectController.listProjectInvites.bind(projectController),
+    );
+
+    fastify.delete<{
+        Params: ProjectInviteIdParams;
+    }>(
+        "/:projectId/invitations/:inviteId",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Projects"],
+                description: "Revoke a project invitation link",
+                params: { $ref: "projectInviteIdParamsSchema" },
+                response: {
+                    200: { $ref: "projectInviteResponse" },
+                    404: { $ref: "projectErrorResponse" },
+                },
+            },
+        },
+        projectController.revokeProjectInvite.bind(projectController),
     );
 }

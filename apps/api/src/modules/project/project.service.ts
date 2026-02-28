@@ -4,17 +4,22 @@ import {
     PERMISSION_BIT_FLAGS,
 } from "@/utils/constants";
 
+import GlobalUtils from "@/utils/golabalUtils";
 import {
     LabelDal,
     ProjectDal,
     ProjectDefinedRolesDal,
+    ProjectInvitesDal,
     ProjectRolesDal,
     ServerDal,
     TaskTypeDal,
     UserDal,
     type DbNewProject,
     type DbProject,
+    type DbProjectInvite,
 } from "@taskcord/database";
+import crypto from "node:crypto";
+import type { CreateProjectInvite } from "./project.schema";
 
 const PROJECT_DEFAULT_ROLES = [
     {
@@ -155,6 +160,53 @@ const PROJECT_DEFAULT_TASK_TYPES = {
 } as const;
 
 export default class ProjectService {
+    private static readonly DEFAULT_INVITE_EXPIRY_HOURS = 24 * 7;
+
+    private static readonly DEFAULT_MULTI_USE_MAX = 25;
+
+    private static readonly ALLOWED_RESTRICTION_TYPES = [
+        "none",
+        "email",
+        "discord_id",
+    ] as const;
+
+    private sanitizeInvite(invite: DbProjectInvite) {
+        return {
+            id: invite.id,
+            projectId: invite.projectId,
+            inviterId: invite.inviterId,
+            roleId: invite.roleId,
+            inviteType: invite.inviteType,
+            restrictionType: invite.restrictionType,
+            restrictedEmail: invite.restrictedEmail,
+            restrictedDiscordId: invite.restrictedDiscordId,
+            maxUses: invite.maxUses,
+            usedCount: invite.usedCount,
+            expiresAt: invite.expiresAt,
+            revokedAt: invite.revokedAt,
+            lastAcceptedAt: invite.lastAcceptedAt,
+            createdAt: invite.createdAt,
+            updatedAt: invite.updatedAt,
+        };
+    }
+
+    private async assertProjectOwner(
+        projectId: string,
+        requesterUserId: string,
+    ) {
+        const project = await ProjectDal.getProjectById(projectId);
+
+        if (!project) {
+            throw new Error("Project not found");
+        }
+
+        if (project.creatorId !== requesterUserId) {
+            throw new Error("Only project owner can manage invitations");
+        }
+
+        return project;
+    }
+
     public async createProject(
         userDiscordId: string,
         projectData: DbNewProject,
@@ -298,5 +350,131 @@ export default class ProjectService {
     public async isBotInServer(serverId: string): Promise<boolean> {
         const server = await ServerDal.getServerById(serverId);
         return server !== null && Boolean(server.ownerId);
+    }
+
+    public async createProjectInvite(input: {
+        projectId: string;
+        inviterUserId: string;
+        payload: CreateProjectInvite;
+    }) {
+        await this.assertProjectOwner(input.projectId, input.inviterUserId);
+
+        if (
+            !ProjectService.ALLOWED_RESTRICTION_TYPES.includes(
+                input.payload.restrictionType,
+            )
+        ) {
+            throw new Error("Invalid restriction type");
+        }
+
+        if (
+            input.payload.restrictionType === "email" &&
+            !input.payload.restrictedEmail
+        ) {
+            throw new Error(
+                "restrictedEmail is required for email restriction",
+            );
+        }
+
+        if (
+            input.payload.restrictionType === "discord_id" &&
+            !input.payload.restrictedDiscordId
+        ) {
+            throw new Error(
+                "restrictedDiscordId is required for discord_id restriction",
+            );
+        }
+
+        if (input.payload.roleId) {
+            const role = await ProjectDefinedRolesDal.getRoleById(
+                input.payload.roleId,
+            );
+            if (!role || role.projectId !== input.projectId) {
+                throw new Error("Invalid roleId for this project");
+            }
+        }
+
+        const inviteToken = crypto.randomBytes(32).toString("base64url");
+        const tokenHash = crypto
+            .createHash("sha256")
+            .update(inviteToken)
+            .digest("hex");
+
+        const inviteType = input.payload.inviteType ?? "single_use";
+        const maxUses =
+            inviteType === "multi_use"
+                ? (input.payload.maxUses ??
+                  ProjectService.DEFAULT_MULTI_USE_MAX)
+                : 1;
+
+        const expiresInHours =
+            input.payload.expiresInHours ??
+            ProjectService.DEFAULT_INVITE_EXPIRY_HOURS;
+
+        const expiresAt = new Date(
+            Date.now() + expiresInHours * 60 * 60 * 1000,
+        );
+
+        const invite = await ProjectInvitesDal.createInvite({
+            projectId: input.projectId,
+            inviterId: input.inviterUserId,
+            roleId: input.payload.roleId,
+            tokenHash,
+            inviteType,
+            restrictionType: input.payload.restrictionType,
+            restrictedEmail:
+                input.payload.restrictionType === "email"
+                    ? input.payload.restrictedEmail?.toLowerCase()
+                    : null,
+            restrictedDiscordId:
+                input.payload.restrictionType === "discord_id"
+                    ? input.payload.restrictedDiscordId
+                    : null,
+            maxUses,
+            usedCount: 0,
+            expiresAt,
+        });
+
+        const apiHostUrl = GlobalUtils.getApiHostUrl();
+        const authInitUrl = `${apiHostUrl}/api/edge/auth/discord/init?invite_token=${encodeURIComponent(inviteToken)}`;
+
+        return {
+            invite: this.sanitizeInvite(invite),
+            inviteToken,
+            authInitUrl,
+        };
+    }
+
+    public async listProjectInvites(
+        projectId: string,
+        requesterUserId: string,
+    ) {
+        await this.assertProjectOwner(projectId, requesterUserId);
+
+        const invites = await ProjectInvitesDal.listInvitesByProject(projectId);
+
+        return invites.map((invite) => this.sanitizeInvite(invite));
+    }
+
+    public async revokeProjectInvite(
+        projectId: string,
+        inviteId: string,
+        requesterUserId: string,
+    ) {
+        await this.assertProjectOwner(projectId, requesterUserId);
+
+        const invite = await ProjectInvitesDal.getInviteById(inviteId);
+
+        if (!invite || invite.projectId !== projectId) {
+            return null;
+        }
+
+        const revokedInvite = await ProjectInvitesDal.revokeInvite(inviteId);
+
+        if (!revokedInvite) {
+            return null;
+        }
+
+        return this.sanitizeInvite(revokedInvite);
     }
 }

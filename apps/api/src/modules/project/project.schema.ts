@@ -65,6 +65,76 @@ const projectSchemaWithId = z
     })
     .meta({ $id: "projectSchemaWithId" });
 
+const createProjectInviteSchema = z
+    .object({
+        roleId: z.string().uuid().optional(),
+        inviteType: z.enum(["single_use", "multi_use"]).default("single_use"),
+        maxUses: z.number().int().min(1).max(1000).optional(),
+        expiresInHours: z
+            .number()
+            .int()
+            .min(1)
+            .max(24 * 30)
+            .optional(),
+        restrictionType: z
+            .enum(["none", "email", "discord_id"])
+            .default("none"),
+        restrictedEmail: z.string().email().optional(),
+        restrictedDiscordId: z.string().optional(),
+    })
+    .meta({ $id: "createProjectInviteSchema" });
+
+const projectInviteParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+    })
+    .meta({ $id: "projectInviteParamsSchema" });
+
+const projectInviteIdParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+        inviteId: z.string().uuid(),
+    })
+    .meta({ $id: "projectInviteIdParamsSchema" });
+
+const projectInviteCoreSchema = z.object({
+    id: z.string().uuid(),
+    projectId: z.string().uuid(),
+    inviterId: z.string().uuid(),
+    roleId: z.string().uuid().nullable(),
+    inviteType: z.string(),
+    restrictionType: z.string(),
+    restrictedEmail: z.string().nullable(),
+    restrictedDiscordId: z.string().nullable(),
+    maxUses: z.number(),
+    usedCount: z.number(),
+    expiresAt: z.date(),
+    revokedAt: z.date().nullable(),
+    lastAcceptedAt: z.date().nullable(),
+    createdAt: z.date().nullable(),
+    updatedAt: z.date().nullable(),
+});
+
+const projectInviteCreateResponseSchema = z
+    .object({
+        invite: projectInviteCoreSchema,
+        inviteToken: z.string(),
+        authInitUrl: z.string(),
+    })
+    .meta({ $id: "projectInviteCreateResponse" });
+
+const projectInvitesResponseSchema = z
+    .object({
+        invites: z.array(projectInviteCoreSchema),
+    })
+    .meta({ $id: "projectInvitesResponse" });
+
+const projectInviteResponseSchema = z
+    .object({
+        invite: projectInviteCoreSchema,
+    })
+    .meta({ $id: "projectInviteResponse" });
+
 const isBotInServerResponseSchema = z
     .object({
         ok: z.boolean(),
@@ -79,6 +149,9 @@ export type ProjectsResponse = z.infer<typeof projectsResponseSchema>;
 export type ErrorResponse = z.infer<typeof errorResponseSchema>;
 export type ProjectWithId = z.infer<typeof projectSchemaWithId>;
 export type IsBotInServerResponse = z.infer<typeof isBotInServerResponseSchema>;
+export type CreateProjectInvite = z.infer<typeof createProjectInviteSchema>;
+export type ProjectInviteParams = z.infer<typeof projectInviteParamsSchema>;
+export type ProjectInviteIdParams = z.infer<typeof projectInviteIdParamsSchema>;
 
 export const zodProjectSchemas = zodSchemasToJSONSchema([
     createProjectSchema,
@@ -88,4 +161,10 @@ export const zodProjectSchemas = zodSchemasToJSONSchema([
     errorResponseSchema,
     projectSchemaWithId,
     isBotInServerResponseSchema,
+    createProjectInviteSchema,
+    projectInviteParamsSchema,
+    projectInviteIdParamsSchema,
+    projectInviteCreateResponseSchema,
+    projectInvitesResponseSchema,
+    projectInviteResponseSchema,
 ]);

@@ -1,5 +1,10 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
+import type {
+    CreateProjectInvite,
+    ProjectInviteIdParams,
+    ProjectInviteParams,
+} from "./project.schema";
 import type ProjectService from "./project.service";
 
 export default class ProjectController {
@@ -101,6 +106,54 @@ export default class ProjectController {
         }
 
         return reply.send({ ok: isBotInServer });
+    }
+
+    public async createProjectInvite(
+        request: FastifyRequest<{
+            Params: ProjectInviteParams;
+            Body: CreateProjectInvite;
+        }>,
+        reply: FastifyReply,
+    ) {
+        const { projectId } = request.params;
+        const result = await this.projectService.createProjectInvite({
+            projectId,
+            inviterUserId: request.jwtUser.id,
+            payload: request.body,
+        });
+
+        return reply.code(201).send(result);
+    }
+
+    public async listProjectInvites(
+        request: FastifyRequest<{ Params: ProjectInviteParams }>,
+        reply: FastifyReply,
+    ) {
+        const { projectId } = request.params;
+        const invites = await this.projectService.listProjectInvites(
+            projectId,
+            request.jwtUser.id,
+        );
+
+        return reply.send({ invites });
+    }
+
+    public async revokeProjectInvite(
+        request: FastifyRequest<{ Params: ProjectInviteIdParams }>,
+        reply: FastifyReply,
+    ) {
+        const { projectId, inviteId } = request.params;
+        const invite = await this.projectService.revokeProjectInvite(
+            projectId,
+            inviteId,
+            request.jwtUser.id,
+        );
+
+        if (!invite) {
+            return reply.notFound("Invite not found");
+        }
+
+        return reply.send({ invite });
     }
 }
 

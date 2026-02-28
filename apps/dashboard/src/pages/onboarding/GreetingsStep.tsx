@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Rocket, Bot, Server, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Bot, Rocket, Server, Sparkles } from 'lucide-react';
 
 export function AnimatedBot() {
   return (
@@ -18,7 +18,7 @@ export function GreetingsStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="relative flex h-[600px] items-center justify-center">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-30" />
+      <div className="absolute inset-0 bg-linear-to-br from-blue-500/10 to-purple-500/10 opacity-30" />
       <AnimatedBot />
       {/* Main content */}
       <motion.div
@@ -34,7 +34,7 @@ export function GreetingsStep({ onNext }: { onNext: () => void }) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h1 className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-5xl font-bold text-transparent md:text-5xl">
+            <h1 className="bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-5xl font-bold text-transparent md:text-5xl">
               <span className="text-primary"> Welcome to</span> {import.meta.env.VITE_APP_NAME}
             </h1>
           </motion.div>
@@ -80,7 +80,7 @@ export function GreetingsStep({ onNext }: { onNext: () => void }) {
           <Button
             size="lg"
             onClick={onNext}
-            className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6 text-lg hover:from-blue-700 hover:to-purple-700"
+            className="group relative overflow-hidden bg-linear-to-r from-blue-600 to-purple-600 px-8 py-6 text-lg hover:from-blue-700 hover:to-purple-700"
           >
             <span className="text-primary relative z-10 flex items-center gap-2">
               Get Started
@@ -88,7 +88,7 @@ export function GreetingsStep({ onNext }: { onNext: () => void }) {
             </span>
             {/* Button shine effect */}
             <div className="absolute inset-0 opacity-30 transition-opacity group-hover:opacity-30">
-              <div className="animate-shine absolute -inset-8 bg-gradient-to-r from-white/40 via-white/0 to-white/40" />
+              <div className="animate-shine absolute -inset-8 bg-linear-to-r from-white/40 via-white/0 to-white/40" />
             </div>
           </Button>
         </motion.div>
@@ -100,7 +100,7 @@ export function GreetingsStep({ onNext }: { onNext: () => void }) {
           transition={{ duration: 1, delay: 0.5 }}
           className="relative mx-auto mt-12 hidden max-w-3xl"
         >
-          <div className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 opacity-20 blur-2xl" />
+          <div className="absolute inset-0 -z-10 rounded-xl bg-linear-to-r from-blue-500 to-purple-500 opacity-20 blur-2xl" />
           <div className="bg-background/50 rounded-xl border p-4 shadow-2xl backdrop-blur-lg">
             <div className="flex gap-4">
               {/* Left side - Task list demo */}

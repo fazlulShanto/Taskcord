@@ -20,10 +20,8 @@ const auth200ResponseSchema = z
 
 const authInitQueryParamsSchema = z
     .object({
-        redirect_url: z.enum([
-            "http://localhost:5173",
-            "https://p005.netlify.app",
-        ]),
+        redirect_url: z.string().url().optional(),
+        invite_token: z.string().min(16).optional(),
     })
     .meta({ $id: "authInitQueryParams" });
 

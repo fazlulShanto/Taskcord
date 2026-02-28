@@ -143,6 +143,14 @@ export {
     type DbProjectUserRoleRow,
 } from "./models/project-roles.model";
 
+//PROJECT INVITES MODEL
+export {
+    ProjectInvitesDal,
+    projectInvitesModel,
+    type DbNewProjectInvite,
+    type DbProjectInvite,
+} from "./models/project-invites.model";
+
 //MILESTONE MODEL
 export {
     MilestoneDal,
