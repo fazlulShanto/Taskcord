@@ -54,6 +54,10 @@ const getNavbarDataWithProjectId = (projectId: string | undefined) => {
           title: 'Task Settings',
           url: `/project/${projectId}/settings/task-settings`,
         },
+        {
+          title: 'Milestones',
+          url: `/project/${projectId}/settings/milestone`,
+        },
       ],
     },
   ];

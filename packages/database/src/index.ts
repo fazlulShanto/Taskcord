@@ -142,3 +142,11 @@ export {
     type DbProjectRole,
     type DbProjectUserRoleRow,
 } from "./models/project-roles.model";
+
+//MILESTONE MODEL
+export {
+    MilestoneDal,
+    milestoneModel,
+    type DbMilestone,
+    type DbNewMilestone,
+} from "./models/milestone.model";

@@ -33,3 +33,15 @@ export type TaskType = {
   creatorId: string;
   order: number;
 };
+
+export type Milestone = {
+  id: string;
+  projectId: string;
+  title: string;
+  description: string;
+  status: string;
+  startDate: string | null;
+  endDate: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
+};

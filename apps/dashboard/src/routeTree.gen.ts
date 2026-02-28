@@ -24,6 +24,7 @@ import { Route as AuthGuardProjectProjectIdTasksRouteImport } from './routes/_au
 import { Route as AuthGuardProjectProjectIdDashboardRouteImport } from './routes/_authGuard.project/$projectId/dashboard'
 import { Route as AuthGuardProjectProjectIdSettingsTeamInfoRouteImport } from './routes/_authGuard.project/$projectId/settings/team-info'
 import { Route as AuthGuardProjectProjectIdSettingsTaskSettingsRouteImport } from './routes/_authGuard.project/$projectId/settings/task-settings'
+import { Route as AuthGuardProjectProjectIdSettingsMilestoneRouteImport } from './routes/_authGuard.project/$projectId/settings/milestone'
 import { Route as AuthGuardProjectProjectIdSettingsMemberManagementRouteImport } from './routes/_authGuard.project/$projectId/settings/member-management'
 
 const PlaygroundRoute = PlaygroundRouteImport.update({
@@ -107,6 +108,12 @@ const AuthGuardProjectProjectIdSettingsTaskSettingsRoute =
     path: '/settings/task-settings',
     getParentRoute: () => AuthGuardProjectProjectIdRoute,
   } as any)
+const AuthGuardProjectProjectIdSettingsMilestoneRoute =
+  AuthGuardProjectProjectIdSettingsMilestoneRouteImport.update({
+    id: '/settings/milestone',
+    path: '/settings/milestone',
+    getParentRoute: () => AuthGuardProjectProjectIdRoute,
+  } as any)
 const AuthGuardProjectProjectIdSettingsMemberManagementRoute =
   AuthGuardProjectProjectIdSettingsMemberManagementRouteImport.update({
     id: '/settings/member-management',
@@ -128,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/project/$projectId/team-settings': typeof AuthGuardProjectProjectIdTeamSettingsRoute
   '/project/$projectId/': typeof AuthGuardProjectProjectIdIndexRoute
   '/project/$projectId/settings/member-management': typeof AuthGuardProjectProjectIdSettingsMemberManagementRoute
+  '/project/$projectId/settings/milestone': typeof AuthGuardProjectProjectIdSettingsMilestoneRoute
   '/project/$projectId/settings/task-settings': typeof AuthGuardProjectProjectIdSettingsTaskSettingsRoute
   '/project/$projectId/settings/team-info': typeof AuthGuardProjectProjectIdSettingsTeamInfoRoute
 }
@@ -144,6 +152,7 @@ export interface FileRoutesByTo {
   '/project/$projectId/team-settings': typeof AuthGuardProjectProjectIdTeamSettingsRoute
   '/project/$projectId': typeof AuthGuardProjectProjectIdIndexRoute
   '/project/$projectId/settings/member-management': typeof AuthGuardProjectProjectIdSettingsMemberManagementRoute
+  '/project/$projectId/settings/milestone': typeof AuthGuardProjectProjectIdSettingsMilestoneRoute
   '/project/$projectId/settings/task-settings': typeof AuthGuardProjectProjectIdSettingsTaskSettingsRoute
   '/project/$projectId/settings/team-info': typeof AuthGuardProjectProjectIdSettingsTeamInfoRoute
 }
@@ -163,6 +172,7 @@ export interface FileRoutesById {
   '/_authGuard/project/$projectId/team-settings': typeof AuthGuardProjectProjectIdTeamSettingsRoute
   '/_authGuard/project/$projectId/': typeof AuthGuardProjectProjectIdIndexRoute
   '/_authGuard/project/$projectId/settings/member-management': typeof AuthGuardProjectProjectIdSettingsMemberManagementRoute
+  '/_authGuard/project/$projectId/settings/milestone': typeof AuthGuardProjectProjectIdSettingsMilestoneRoute
   '/_authGuard/project/$projectId/settings/task-settings': typeof AuthGuardProjectProjectIdSettingsTaskSettingsRoute
   '/_authGuard/project/$projectId/settings/team-info': typeof AuthGuardProjectProjectIdSettingsTeamInfoRoute
 }
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/team-settings'
     | '/project/$projectId/'
     | '/project/$projectId/settings/member-management'
+    | '/project/$projectId/settings/milestone'
     | '/project/$projectId/settings/task-settings'
     | '/project/$projectId/settings/team-info'
   fileRoutesByTo: FileRoutesByTo
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/project/$projectId/team-settings'
     | '/project/$projectId'
     | '/project/$projectId/settings/member-management'
+    | '/project/$projectId/settings/milestone'
     | '/project/$projectId/settings/task-settings'
     | '/project/$projectId/settings/team-info'
   id:
@@ -216,6 +228,7 @@ export interface FileRouteTypes {
     | '/_authGuard/project/$projectId/team-settings'
     | '/_authGuard/project/$projectId/'
     | '/_authGuard/project/$projectId/settings/member-management'
+    | '/_authGuard/project/$projectId/settings/milestone'
     | '/_authGuard/project/$projectId/settings/task-settings'
     | '/_authGuard/project/$projectId/settings/team-info'
   fileRoutesById: FileRoutesById
@@ -335,6 +348,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthGuardProjectProjectIdSettingsTaskSettingsRouteImport
       parentRoute: typeof AuthGuardProjectProjectIdRoute
     }
+    '/_authGuard/project/$projectId/settings/milestone': {
+      id: '/_authGuard/project/$projectId/settings/milestone'
+      path: '/settings/milestone'
+      fullPath: '/project/$projectId/settings/milestone'
+      preLoaderRoute: typeof AuthGuardProjectProjectIdSettingsMilestoneRouteImport
+      parentRoute: typeof AuthGuardProjectProjectIdRoute
+    }
     '/_authGuard/project/$projectId/settings/member-management': {
       id: '/_authGuard/project/$projectId/settings/member-management'
       path: '/settings/member-management'
@@ -351,6 +371,7 @@ interface AuthGuardProjectProjectIdRouteChildren {
   AuthGuardProjectProjectIdTeamSettingsRoute: typeof AuthGuardProjectProjectIdTeamSettingsRoute
   AuthGuardProjectProjectIdIndexRoute: typeof AuthGuardProjectProjectIdIndexRoute
   AuthGuardProjectProjectIdSettingsMemberManagementRoute: typeof AuthGuardProjectProjectIdSettingsMemberManagementRoute
+  AuthGuardProjectProjectIdSettingsMilestoneRoute: typeof AuthGuardProjectProjectIdSettingsMilestoneRoute
   AuthGuardProjectProjectIdSettingsTaskSettingsRoute: typeof AuthGuardProjectProjectIdSettingsTaskSettingsRoute
   AuthGuardProjectProjectIdSettingsTeamInfoRoute: typeof AuthGuardProjectProjectIdSettingsTeamInfoRoute
 }
@@ -365,6 +386,8 @@ const AuthGuardProjectProjectIdRouteChildren: AuthGuardProjectProjectIdRouteChil
     AuthGuardProjectProjectIdIndexRoute: AuthGuardProjectProjectIdIndexRoute,
     AuthGuardProjectProjectIdSettingsMemberManagementRoute:
       AuthGuardProjectProjectIdSettingsMemberManagementRoute,
+    AuthGuardProjectProjectIdSettingsMilestoneRoute:
+      AuthGuardProjectProjectIdSettingsMilestoneRoute,
     AuthGuardProjectProjectIdSettingsTaskSettingsRoute:
       AuthGuardProjectProjectIdSettingsTaskSettingsRoute,
     AuthGuardProjectProjectIdSettingsTeamInfoRoute:
