@@ -61,6 +61,16 @@ export const APIs = {
     deleteMilestone: (projectId: string, milestoneId: string) =>
       `${API_URL}/api/edge/projects/${projectId}/milestones/${milestoneId}`,
   },
+  task: {
+    getAllTasks: (projectId: string) => `${API_URL}/api/edge/projects/${projectId}/tasks`,
+    createTask: (projectId: string) => `${API_URL}/api/edge/projects/${projectId}/tasks`,
+    getTask: (projectId: string, taskId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}`,
+    updateTask: (projectId: string, taskId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}`,
+    deleteTask: (projectId: string, taskId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}`,
+  },
   utility: {
     cookies: () => `${API_URL}/api/stable/utility/cookie-test`,
   },

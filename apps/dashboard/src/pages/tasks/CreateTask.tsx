@@ -47,7 +47,7 @@ export const CreateTask: FC<CreateTaskProps> = () => {
           <SheetDescription></SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 p-4">
-          <TaskForm />
+          <TaskForm onSuccess={() => setIsSheetOpen(false)} />
         </div>
       </SheetContent>
     </Sheet>

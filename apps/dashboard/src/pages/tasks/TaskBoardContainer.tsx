@@ -3,6 +3,7 @@ import { useTaskStore } from '@/stores/useTaskStore';
 import { TaskTabsType } from '@/types/tasks';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
 import { type FC, useMemo } from 'react';
+import { TaskListBoard } from './TaskListBoard';
 
 const taskBoardTabs: { label: string; value: TaskTabsType }[] = [
   { label: 'Kanban', value: 'kanban' },
@@ -24,6 +25,8 @@ export const TaskBoardContainer: FC<TaskBoardContainerProps> = () => {
     switch (currentTab) {
       case 'kanban':
         return <KanbanBoard />;
+      case 'list':
+        return <TaskListBoard />;
       default:
         return <div className="p-8">No board view for {selectedTab}</div>;
     }

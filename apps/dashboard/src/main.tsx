@@ -1,11 +1,9 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
-
+import { App } from './App';
 import reportWebVitals from './reportWebVitals.ts';
 import './styles.css';
-import { App } from './App';
-
 
 // Render the app
 const rootElement = document.getElementById('app');

@@ -13,6 +13,7 @@ export default function MilestoneRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Milestones"],
                 description: "Create a new milestone",
+                params: { $ref: "milestoneProjectIdParams" },
                 body: { $ref: "createMilestoneSchema" },
                 response: {
                     201: { $ref: "milestoneResponse" },
@@ -30,13 +31,7 @@ export default function MilestoneRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Milestones"],
                 description: "Get all milestones of a project",
-                params: {
-                    type: "object",
-                    properties: {
-                        projectId: { type: "string" },
-                    },
-                    required: ["projectId"],
-                },
+                params: { $ref: "milestoneProjectIdParams" },
                 response: {
                     200: { $ref: "milestonesResponse" },
                 },
@@ -52,7 +47,7 @@ export default function MilestoneRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Milestones"],
                 description: "Get a milestone by id",
-                params: { $ref: "milestoneSchemaWithId" },
+                params: { $ref: "milestoneParams" },
                 response: {
                     200: { $ref: "milestoneResponse" },
                     404: { $ref: "milestoneErrorResponse" },
@@ -69,7 +64,7 @@ export default function MilestoneRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Milestones"],
                 description: "Update a milestone",
-                params: { $ref: "milestoneSchemaWithId" },
+                params: { $ref: "milestoneParams" },
                 body: { $ref: "updateMilestoneSchema" },
                 response: {
                     200: { $ref: "milestoneResponse" },
@@ -87,7 +82,7 @@ export default function MilestoneRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Milestones"],
                 description: "Delete a milestone",
-                params: { $ref: "milestoneSchemaWithId" },
+                params: { $ref: "milestoneParams" },
                 response: {
                     200: { $ref: "milestoneResponse" },
                     404: { $ref: "milestoneErrorResponse" },

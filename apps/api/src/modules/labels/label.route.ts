@@ -14,6 +14,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Task Labels"],
                 description: "Create a new task label",
+                params: { $ref: "labelProjectIdParams" },
                 body: { $ref: "createLabelSchema" },
                 response: {
                     201: { $ref: "labelResponse" },
@@ -32,13 +33,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Task Labels"],
                 description: "Get all task labels of a project",
-                params: {
-                    type: "object",
-                    properties: {
-                        projectId: { type: "string" },
-                    },
-                    required: ["projectId"],
-                },
+                params: { $ref: "labelProjectIdParams" },
                 response: {
                     200: { $ref: "labelsResponse" },
                 },
@@ -55,6 +50,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Task Labels"],
                 description: "Update a task label",
+                params: { $ref: "labelParams" },
                 body: { $ref: "updateLabelSchema" },
                 response: {
                     200: { $ref: "labelResponse" },
@@ -73,13 +69,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Task Labels"],
                 description: "Delete a task label",
-                params: {
-                    type: "object",
-                    properties: {
-                        labelId: { type: "string" },
-                    },
-                    required: ["labelId"],
-                },
+                params: { $ref: "labelParams" },
                 response: {
                     200: { $ref: "labelResponse" },
                     400: { $ref: "labelErrorResponse" },
@@ -97,6 +87,7 @@ export default function LabelsRoute(fastify: FastifyInstance) {
             schema: {
                 tags: ["Task Labels"],
                 description: "Delete multiple task labels",
+                params: { $ref: "labelProjectIdParams" },
                 body: {
                     type: "object",
                     properties: {

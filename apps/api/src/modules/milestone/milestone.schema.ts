@@ -59,8 +59,25 @@ const milestoneSchemaWithId = z
     })
     .meta({ $id: "milestoneSchemaWithId" });
 
+const milestoneProjectIdParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+    })
+    .meta({ $id: "milestoneProjectIdParams" });
+
+const milestoneParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+        milestoneId: z.string().uuid(),
+    })
+    .meta({ $id: "milestoneParams" });
+
 export type CreateMilestone = z.infer<typeof createMilestoneSchema>;
 export type UpdateMilestone = z.infer<typeof updateMilestoneSchema>;
+export type MilestoneProjectIdParams = z.infer<
+    typeof milestoneProjectIdParamsSchema
+>;
+export type MilestoneParams = z.infer<typeof milestoneParamsSchema>;
 
 export const zodMilestoneSchemas = zodSchemasToJSONSchema([
     createMilestoneSchema,
@@ -69,4 +86,6 @@ export const zodMilestoneSchemas = zodSchemasToJSONSchema([
     milestonesResponseSchema,
     errorResponseSchema,
     milestoneSchemaWithId,
+    milestoneProjectIdParamsSchema,
+    milestoneParamsSchema,
 ]);

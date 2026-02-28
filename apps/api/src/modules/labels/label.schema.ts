@@ -62,12 +62,27 @@ const labelSchemaWithId = z
     })
     .meta({ $id: "labelSchemaWithId" });
 
+const labelProjectIdParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+    })
+    .meta({ $id: "labelProjectIdParams" });
+
+const labelParamsSchema = z
+    .object({
+        projectId: z.string().uuid(),
+        labelId: z.string().uuid(),
+    })
+    .meta({ $id: "labelParams" });
+
 export type CreateLabel = z.infer<typeof createLabelSchema>;
 export type UpdateLabel = z.infer<typeof updateLabelSchema>;
 export type LabelResponse = z.infer<typeof taskLabelResponseSchema>;
 export type LabelsResponse = z.infer<typeof taskLabelsResponseSchema>;
 export type LabelErrorResponse = z.infer<typeof errorResponseSchema>;
 export type LabelWithId = z.infer<typeof labelSchemaWithId>;
+export type LabelProjectIdParams = z.infer<typeof labelProjectIdParamsSchema>;
+export type LabelParams = z.infer<typeof labelParamsSchema>;
 
 export const zodLabelSchemas = zodSchemasToJSONSchema([
     createLabelSchema,
@@ -76,4 +91,6 @@ export const zodLabelSchemas = zodSchemasToJSONSchema([
     taskLabelsResponseSchema,
     errorResponseSchema,
     labelSchemaWithId,
+    labelProjectIdParamsSchema,
+    labelParamsSchema,
 ]);

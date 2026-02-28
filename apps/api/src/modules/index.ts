@@ -4,6 +4,7 @@ import auth from "./auth";
 import labels from "./labels";
 import milestone from "./milestone";
 import project from "./project";
+import task from "./task";
 import taskType from "./task-type";
 import userRoutes from "./user";
 import utility from "./utility";
@@ -53,6 +54,13 @@ export default fastifyPlugin(
                 getOptionsWithPrefix(
                     options,
                     "/edge/projects/:projectId/milestones",
+                ),
+            ),
+            fastify.register(
+                task,
+                getOptionsWithPrefix(
+                    options,
+                    "/edge/projects/:projectId/tasks",
                 ),
             ),
         ]);

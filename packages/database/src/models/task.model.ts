@@ -70,8 +70,8 @@ export class TaskDal {
     static async updateTask(
         id: string,
         data: Partial<DbNewTask>,
-    ): Promise<DbTask> {
-        const [updatedTask] = await db
+    ): Promise<DbTask | null> {
+        const result = await db
             .update(taskModel)
             .set({
                 ...data,
@@ -80,15 +80,15 @@ export class TaskDal {
             .where(eq(taskModel.id, id))
             .returning();
 
-        return updatedTask;
+        return result.at(0) ?? null;
     }
 
-    static async deleteTask(id: string): Promise<DbTask> {
-        const [deletedTask] = await db
+    static async deleteTask(id: string): Promise<DbTask | null> {
+        const result = await db
             .delete(taskModel)
             .where(eq(taskModel.id, id))
             .returning();
 
-        return deletedTask;
+        return result.at(0) ?? null;
     }
 }

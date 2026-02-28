@@ -158,3 +158,11 @@ export {
     type DbMilestone,
     type DbNewMilestone,
 } from "./models/milestone.model";
+
+//TASK MODEL
+export {
+    TaskDal,
+    taskModel,
+    type DbNewTask,
+    type DbTask,
+} from "./models/task.model";

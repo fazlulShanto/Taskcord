@@ -7,7 +7,8 @@ export const useLabelQuery = (projectId: string) => {
   return useQuery({
     queryKey: ['labels', projectId],
     staleTime: 1000 * 15,
-    queryFn: () => HttpClient.get<Label[]>(APIs.label.getAllLabels(projectId)),
+    queryFn: () => HttpClient.get<{ taskLabels: Label[] }>(APIs.label.getAllLabels(projectId)),
+    enabled: !!projectId,
   });
 };
 

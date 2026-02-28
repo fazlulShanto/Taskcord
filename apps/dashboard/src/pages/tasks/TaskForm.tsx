@@ -16,11 +16,18 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useLabelQuery } from '@/queries/useLabelQuery';
+import { useMilestonesQuery } from '@/queries/useMilestoneQuery';
+import { useProjectUserRolesQuery } from '@/queries/useProjectUserRolesQuery';
+import { useCreateTaskMutation } from '@/queries/useTaskQuery';
+import { useTaskStatusesQuery } from '@/queries/useTaskStatusQuery';
 import { useTaskTypesQuery } from '@/queries/useTaskTypeQuery';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams } from '@tanstack/react-router';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+const TASK_PRIORITIES = ['highest', 'high', 'medium', 'low', 'lowest'] as const;
 
 // Form Schema based on Task type
 const taskFormSchema = z.object({
@@ -31,15 +38,29 @@ const taskFormSchema = z.object({
   assignee: z.string().min(1, { message: 'Assignee is required' }),
   milestone: z.string().min(1, { message: 'Milestone is required' }),
   status: z.string().min(1, { message: 'Status is required' }),
-  priority: z.string().min(1, { message: 'Priority is required' }),
+  priority: z.enum(TASK_PRIORITIES, { message: 'Priority is required' }),
   dueDate: z.string().min(1, { message: 'Due date is required' }),
 });
 
 type TaskFormValues = z.infer<typeof taskFormSchema>;
 
-export const TaskForm = () => {
+interface TaskFormProps {
+  onSuccess?: () => void;
+}
+
+export const TaskForm = ({ onSuccess }: TaskFormProps) => {
   const { projectId = '' } = useParams({ strict: false });
   const { data: taskTypeData } = useTaskTypesQuery(projectId);
+  const { data: userRoleData } = useProjectUserRolesQuery(projectId);
+  const { data: milestoneData } = useMilestonesQuery(projectId);
+  const { data: taskStatusData } = useTaskStatusesQuery(projectId);
+  const { data: labelData } = useLabelQuery(projectId);
+  const { mutateAsync: createTask, isPending: isCreatingTask } = useCreateTaskMutation(projectId);
+
+  const projectUsers = userRoleData?.users ?? [];
+  const milestones = milestoneData?.data.milestones ?? [];
+  const statuses = taskStatusData?.data.statuses ?? [];
+  const labels = (labelData?.data.taskLabels ?? []).filter((label) => !label.isStatus);
 
   const form = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
@@ -50,15 +71,25 @@ export const TaskForm = () => {
       issueType: '',
       assignee: '',
       milestone: '',
-      status: 'todo', // Default status
+      status: '',
       priority: 'medium', // Default priority
       dueDate: '',
     },
   });
 
-  const onSubmit = (data: TaskFormValues) => {
-    console.log('Form submitted:', data);
-    // Handle form submission here
+  const onSubmit = async (data: TaskFormValues) => {
+    await createTask({
+      title: data.title,
+      description: data.description,
+      status: data.status,
+      priority: data.priority,
+      milestoneId: data.milestone,
+      assignees: [data.assignee],
+      dueDate: data.dueDate,
+    });
+
+    form.reset();
+    onSuccess?.();
   };
 
   return (
@@ -93,19 +124,30 @@ export const TaskForm = () => {
         />
 
         <div className="grid grid-cols-2 gap-4">
-          {/* <FormField
+          <FormField
             control={form.control}
             name="label"
-            render={() => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel>Label</FormLabel>
                 <FormControl>
-                  <PlayGround />
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select label" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {labels.map((label) => (
+                        <SelectItem key={label.id} value={label.id}>
+                          {label.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          />
 
           <FormField
             control={form.control}
@@ -114,13 +156,13 @@ export const TaskForm = () => {
               <FormItem>
                 <FormLabel>Issue Type</FormLabel>
                 <FormControl>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select issue type" />
                     </SelectTrigger>
                     <SelectContent>
                       {(taskTypeData?.data.taskTypes ?? []).map((taskType) => (
-                        <SelectItem key={taskType.id} value={taskType.name}>
+                        <SelectItem key={taskType.id} value={taskType.id}>
                           {taskType.name}
                         </SelectItem>
                       ))}
@@ -141,7 +183,23 @@ export const TaskForm = () => {
               <FormItem>
                 <FormLabel>Assignee</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter assignee" {...field} />
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select assignee" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {projectUsers.map((user) => {
+                        const displayName =
+                          user.fullName ?? user.nickName ?? user.email ?? user.discordId;
+
+                        return (
+                          <SelectItem key={user.id} value={user.id}>
+                            {displayName}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -155,7 +213,18 @@ export const TaskForm = () => {
               <FormItem>
                 <FormLabel>Milestone</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter milestone" {...field} />
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select milestone" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {milestones.map((milestone) => (
+                        <SelectItem key={milestone.id} value={milestone.id}>
+                          {milestone.title}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -171,7 +240,18 @@ export const TaskForm = () => {
               <FormItem>
                 <FormLabel>Status</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter status" {...field} />
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {statuses.map((status) => (
+                        <SelectItem key={status.id} value={status.name}>
+                          {status.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -185,7 +265,18 @@ export const TaskForm = () => {
               <FormItem>
                 <FormLabel>Priority</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter priority" {...field} />
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TASK_PRIORITIES.map((priority) => (
+                        <SelectItem key={priority} value={priority}>
+                          {priority}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -207,8 +298,8 @@ export const TaskForm = () => {
           )}
         />
 
-        <Button type="submit" className="w-full">
-          Create Task
+        <Button type="submit" className="w-full" disabled={isCreatingTask}>
+          {isCreatingTask ? 'Creating...' : 'Create Task'}
         </Button>
       </form>
     </Form>
