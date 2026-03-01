@@ -135,6 +135,23 @@ const projectInviteResponseSchema = z
     })
     .meta({ $id: "projectInviteResponse" });
 
+const projectDefinedRoleCoreSchema = z.object({
+    id: z.string().uuid(),
+    projectId: z.string().uuid(),
+    roleName: z.string(),
+    description: z.string().nullable(),
+    permissionCode: z.string(),
+    createdAt: z.date().nullable(),
+    updatedAt: z.date().nullable(),
+    creatorId: z.string().uuid(),
+});
+
+const projectDefinedRolesResponseSchema = z
+    .object({
+        roles: z.array(projectDefinedRoleCoreSchema),
+    })
+    .meta({ $id: "projectDefinedRolesResponse" });
+
 const isBotInServerResponseSchema = z
     .object({
         ok: z.boolean(),
@@ -167,4 +184,5 @@ export const zodProjectSchemas = zodSchemasToJSONSchema([
     projectInviteCreateResponseSchema,
     projectInvitesResponseSchema,
     projectInviteResponseSchema,
+    projectDefinedRolesResponseSchema,
 ]);

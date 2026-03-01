@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useGithubInitMutation } from '@/queries/useGithubQuery';
 import { useCreateProjectMutation } from '@/queries/useProjectQuery';
 import { useProjectCreation } from '@/stores/useProjectCreation';
 import { useNavigate } from '@tanstack/react-router';
@@ -15,6 +16,7 @@ export const ConnectGithub: FC<ConnectGithubProps> = () => {
   const selectedServer = useProjectCreation((state) => state.selectedServer);
   const projectDescription = useProjectCreation((state) => state.projectDescription);
   const projectType = useProjectCreation((state) => state.projectType);
+  const githubInitMutation = useGithubInitMutation();
 
   const handleCreateProject = async () => {
     const projectData = {
@@ -29,14 +31,25 @@ export const ConnectGithub: FC<ConnectGithubProps> = () => {
       onSuccess: (res) => {
         const projectId = res?.project?.id;
         if (!projectId) return;
-        navigate({
-          to: '/project/$projectId/dashboard',
-          params: {
-            projectId: projectId,
+        githubInitMutation.mutate(
+          {
+            projectId,
+            redirectUrl: `${window.location.origin}/onboarding`,
           },
-        });
-        // onNext();
-        // Optionally, you can navigate to a new page or perform other actions
+          {
+            onSuccess: (data) => {
+              window.location.href = data.url;
+            },
+            onError: () => {
+              navigate({
+                to: '/project/$projectId/dashboard',
+                params: {
+                  projectId: projectId,
+                },
+              });
+            },
+          }
+        );
       },
       onError: (error) => {
         console.error('Error creating project:', error);
@@ -67,7 +80,7 @@ export const ConnectGithub: FC<ConnectGithubProps> = () => {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-purple-400 opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-purple-500"></span>
               </span>
-              Comming Soon
+              Connect Now
             </div>
           </div>
           <div className="space-y-4">
@@ -96,8 +109,14 @@ export const ConnectGithub: FC<ConnectGithubProps> = () => {
             </div>
           </div>
         </div>
-        <Button onClick={handleCreateProject} className="mt-6 ml-auto">
-          Create Project
+        <Button
+          onClick={handleCreateProject}
+          className="mt-6 ml-auto"
+          disabled={createProjectMutation.isPending || githubInitMutation.isPending}
+        >
+          {createProjectMutation.isPending || githubInitMutation.isPending
+            ? 'Connecting GitHub...'
+            : 'Connect GitHub'}
         </Button>
       </div>
     </div>

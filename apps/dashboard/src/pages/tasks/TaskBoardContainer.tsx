@@ -3,6 +3,7 @@ import { useTaskStore } from '@/stores/useTaskStore';
 import { TaskTabsType } from '@/types/tasks';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
 import { type FC, useMemo } from 'react';
+import { CreateTask } from './CreateTask';
 import { TaskListBoard } from './TaskListBoard';
 
 const taskBoardTabs: { label: string; value: TaskTabsType }[] = [
@@ -46,7 +47,7 @@ export const TaskBoardContainer: FC<TaskBoardContainerProps> = () => {
             </TabsTrigger>
           ))}
         </TabsList>
-        {/* <CreateTask /> */}
+        <CreateTask />
       </div>
       <TabsContent value={currentTab} className="flex flex-1">
         {renderTabContent()}

@@ -2,13 +2,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
-import {
   Table,
   TableBody,
   TableCell,
@@ -22,6 +15,7 @@ import { useTasksQuery } from '@/queries/useTaskQuery';
 import { useParams } from '@tanstack/react-router';
 import { Fragment, useMemo, useState } from 'react';
 import { CreateTask } from './CreateTask';
+import { TaskDetailsSheet } from './TaskDetailsSheet';
 
 type TaskListRow = {
   id: string;
@@ -32,11 +26,14 @@ type TaskListRow = {
     avatar?: string;
   };
   dueDate: string;
+  dueDateValue: string;
   milestone: string;
+  milestoneId: string;
+  assigneeId: string;
   priority: 'highest' | 'high' | 'medium' | 'low' | 'lowest';
+  priorityRaw: string;
   status: 'todo' | 'in-progress' | 'done';
-  createdAt: string;
-  updatedAt: string;
+  statusRaw: string;
 };
 
 const getInitials = (name: string) => {
@@ -70,7 +67,7 @@ const PriorityBadge = ({ priority }: { priority: TaskListRow['priority'] }) => {
 
 export const TaskListBoard = () => {
   const { projectId = '' } = useParams({ strict: false });
-  const [selectedTask, setSelectedTask] = useState<TaskListRow | null>(null);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const {
     data: taskData,
@@ -99,9 +96,9 @@ export const TaskListBoard = () => {
     return map;
   }, [milestoneData?.data.milestones]);
 
-  const listSections = useMemo<Array<{ title: string; tasks: TaskListRow[] }>>(() => {
-    const rows: TaskListRow[] = (taskData?.data.tasks ?? []).map((task) => {
-      const firstAssigneeId = task.assignees[0];
+  const taskRows = useMemo<TaskListRow[]>(() => {
+    return (taskData?.data.tasks ?? []).map((task) => {
+      const firstAssigneeId = task.assignees[0] ?? '';
       const assignee =
         (firstAssigneeId ? userById.get(firstAssigneeId) : undefined) ??
         ({ name: 'Unassigned' } as const);
@@ -131,23 +128,28 @@ export const TaskListBoard = () => {
         title: task.title,
         description: task.description ?? '',
         assignee,
+        assigneeId: firstAssigneeId,
         dueDate: task.dueDate ? new Date(task.dueDate).toLocaleDateString() : '-',
+        dueDateValue: task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : '',
         milestone:
           (task.milestoneId ? milestoneById.get(task.milestoneId) : undefined) ?? 'No milestone',
+        milestoneId: task.milestoneId ?? '',
         priority,
+        priorityRaw: task.priority.toLowerCase(),
         status,
-        createdAt: task.createdAt ? new Date(task.createdAt).toLocaleDateString() : '-',
-        updatedAt: task.updatedAt ? new Date(task.updatedAt).toLocaleDateString() : '-',
+        statusRaw: task.status,
       };
     });
+  }, [milestoneById, taskData?.data.tasks, userById]);
 
+  const listSections = useMemo<Array<{ title: string; tasks: TaskListRow[] }>>(() => {
     const grouped: Record<TaskListRow['status'], TaskListRow[]> = {
       todo: [],
       'in-progress': [],
       done: [],
     };
 
-    rows.forEach((row) => {
+    taskRows.forEach((row) => {
       grouped[row.status].push(row);
     });
 
@@ -156,7 +158,7 @@ export const TaskListBoard = () => {
       { title: 'In Progress', tasks: grouped['in-progress'] },
       { title: 'Done', tasks: grouped.done },
     ].filter((section) => section.tasks.length > 0);
-  }, [milestoneById, taskData?.data.tasks, userById]);
+  }, [taskRows]);
 
   if (isLoadingTasks) {
     return <div className="text-muted-foreground p-6">Loading tasks...</div>;
@@ -167,14 +169,7 @@ export const TaskListBoard = () => {
   }
 
   return (
-    <Sheet
-      open={!!selectedTask}
-      onOpenChange={(open) => {
-        if (!open) {
-          setSelectedTask(null);
-        }
-      }}
-    >
+    <>
       <div className="flex h-full w-full flex-col gap-3">
         <div className="flex items-center justify-end">
           <CreateTask />
@@ -214,7 +209,7 @@ export const TaskListBoard = () => {
                       <TableRow
                         key={task.id}
                         className="cursor-pointer"
-                        onClick={() => setSelectedTask(task)}
+                        onClick={() => setSelectedTaskId(task.id)}
                       >
                         <TableCell className="font-medium">{task.title}</TableCell>
 
@@ -260,59 +255,15 @@ export const TaskListBoard = () => {
           </div>
         )}
       </div>
-
-      <SheetContent className="w-full max-w-lg overflow-y-auto p-0 sm:max-w-xl">
-        <SheetHeader className="border-b px-4 py-3">
-          <SheetTitle>{selectedTask?.title ?? 'Task Details'}</SheetTitle>
-          <SheetDescription>Details and comments</SheetDescription>
-        </SheetHeader>
-
-        <div className="flex flex-col gap-4 p-4">
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold">Details</h3>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div>
-                <p className="text-muted-foreground">Assignee</p>
-                <p>{selectedTask?.assignee.name ?? '-'}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Due Date</p>
-                <p>{selectedTask?.dueDate ?? '-'}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Milestone</p>
-                <p>{selectedTask?.milestone ?? '-'}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Priority</p>
-                <p className="capitalize">{selectedTask?.priority ?? '-'}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Status</p>
-                <p className="capitalize">{selectedTask?.status ?? '-'}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">Updated</p>
-                <p>{selectedTask?.updatedAt ?? '-'}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold">Description</h3>
-            <div className="text-muted-foreground rounded-md border p-3 text-sm">
-              {selectedTask?.description || 'No description provided.'}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold">Comments</h3>
-            <div className="text-muted-foreground rounded-md border p-3 text-sm">
-              No comments yet.
-            </div>
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+      <TaskDetailsSheet
+        projectId={projectId}
+        taskId={selectedTaskId}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedTaskId(null);
+          }
+        }}
+      />
+    </>
   );
 };

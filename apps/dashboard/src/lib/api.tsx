@@ -18,6 +18,11 @@ export const APIs = {
     getAllProjects: () => `${API_URL}/api/edge/project`,
     get: (projectId: string) => `${API_URL}/api/edge/project/${projectId}`,
     update: (projectId: string) => `${API_URL}/api/edge/project/${projectId}`,
+    listInvites: (projectId: string) => `${API_URL}/api/edge/project/${projectId}/invitations`,
+    createInvite: (projectId: string) => `${API_URL}/api/edge/project/${projectId}/invitations`,
+    revokeInvite: (projectId: string, inviteId: string) =>
+      `${API_URL}/api/edge/project/${projectId}/invitations/${inviteId}`,
+    listRoles: (projectId: string) => `${API_URL}/api/edge/project/${projectId}/roles`,
   },
   user: {
     get: (userId: string) => `${API_URL}/api/edge/users/${userId}`,
@@ -71,7 +76,33 @@ export const APIs = {
     deleteTask: (projectId: string, taskId: string) =>
       `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}`,
   },
+  taskComment: {
+    getTaskComments: (projectId: string, taskId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}/comments`,
+    createTaskComment: (projectId: string, taskId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}/comments`,
+    getTaskComment: (projectId: string, taskId: string, commentId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}/comments/${commentId}`,
+    updateTaskComment: (projectId: string, taskId: string, commentId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}/comments/${commentId}`,
+    deleteTaskComment: (projectId: string, taskId: string, commentId: string) =>
+      `${API_URL}/api/edge/projects/${projectId}/tasks/${taskId}/comments/${commentId}`,
+  },
   utility: {
     cookies: () => `${API_URL}/api/stable/utility/cookie-test`,
+  },
+  github: {
+    init: (projectId: string, redirectUrl?: string) => {
+      const url = new URL(`${API_URL}/api/edge/github/init`);
+      url.searchParams.set('project_id', projectId);
+      if (redirectUrl) {
+        url.searchParams.set('redirect_url', redirectUrl);
+      }
+      return url.toString();
+    },
+    listProjectRepos: (projectId: string) =>
+      `${API_URL}/api/edge/github/projects/${projectId}/repositories`,
+    upsertProjectRepo: (projectId: string) =>
+      `${API_URL}/api/edge/github/projects/${projectId}/repositories`,
   },
 };

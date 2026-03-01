@@ -477,4 +477,13 @@ export default class ProjectService {
 
         return this.sanitizeInvite(revokedInvite);
     }
+
+    public async listProjectDefinedRoles(
+        projectId: string,
+        requesterUserId: string,
+    ) {
+        await this.assertProjectOwner(projectId, requesterUserId);
+
+        return await ProjectDefinedRolesDal.getRolesByProjectId(projectId);
+    }
 }

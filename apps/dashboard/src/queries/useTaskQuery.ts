@@ -27,12 +27,34 @@ export type CreateTaskPayload = {
   dueDate?: string;
 };
 
+export type UpdateTaskPayload = {
+  title?: string;
+  description?: string;
+  status?: string;
+  priority?: string;
+  milestoneId?: string | null;
+  assignees?: string[];
+  dueDate?: string | null;
+};
+
 export const useCreateTaskMutation = (projectId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (payload: CreateTaskPayload) =>
       HttpClient.post(APIs.task.createTask(projectId), payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks', projectId] });
+    },
+  });
+};
+
+export const useUpdateTaskMutation = (projectId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ taskId, payload }: { taskId: string; payload: UpdateTaskPayload }) =>
+      HttpClient.put(APIs.task.updateTask(projectId, taskId), payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', projectId] });
     },

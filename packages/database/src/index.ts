@@ -166,3 +166,43 @@ export {
     type DbNewTask,
     type DbTask,
 } from "./models/task.model";
+
+//COMMENT MODEL
+export {
+    CommentDal,
+    commentModel,
+    type DbComment,
+    type DbNewComment,
+} from "./models/comment.model";
+
+//GITHUB INSTALLATION MODEL
+export {
+    GithubInstallationsDal,
+    githubInstallationsModel,
+    type DbGithubInstallation,
+    type DbNewGithubInstallation,
+} from "./models/github-installation.model";
+
+//GITHUB PROJECT INSTALLATION LINK MODEL
+export {
+    GithubProjectInstallationsDal,
+    githubProjectInstallationsModel,
+    type DbGithubProjectInstallation,
+    type DbNewGithubProjectInstallation,
+} from "./models/github-project-installation.model";
+
+//GITHUB PROJECT REPOSITORY MODEL
+export {
+    GithubProjectRepositoriesDal,
+    githubProjectRepositoriesModel,
+    type DbGithubProjectRepository,
+    type DbNewGithubProjectRepository,
+} from "./models/github-project-repository.model";
+
+//GITHUB WEBHOOK DELIVERY MODEL
+export {
+    GithubWebhookDeliveriesDal,
+    githubWebhookDeliveriesModel,
+    type DbGithubWebhookDelivery,
+    type DbNewGithubWebhookDelivery,
+} from "./models/github-webhook-delivery.model";

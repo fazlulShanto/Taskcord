@@ -157,6 +157,25 @@ export default function ProjectRoute(fastify: FastifyInstance) {
         projectController.listProjectInvites.bind(projectController),
     );
 
+    fastify.get<{
+        Params: ProjectInviteParams;
+    }>(
+        "/:projectId/roles",
+        {
+            onRequest: [fastify.jwtAuth],
+            schema: {
+                tags: ["Projects"],
+                description: "List project-defined roles",
+                params: { $ref: "projectInviteParamsSchema" },
+                response: {
+                    200: { $ref: "projectDefinedRolesResponse" },
+                    400: { $ref: "projectErrorResponse" },
+                },
+            },
+        },
+        projectController.listProjectDefinedRoles.bind(projectController),
+    );
+
     fastify.delete<{
         Params: ProjectInviteIdParams;
     }>(

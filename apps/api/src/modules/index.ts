@@ -1,6 +1,8 @@
 import type { FastifyInstance, FastifyPluginOptions } from "fastify";
 import { fastifyPlugin } from "fastify-plugin";
 import auth from "./auth";
+import comment from "./comment";
+import github from "./github";
 import labels from "./labels";
 import milestone from "./milestone";
 import project from "./project";
@@ -62,6 +64,17 @@ export default fastifyPlugin(
                     options,
                     "/edge/projects/:projectId/tasks",
                 ),
+            ),
+            fastify.register(
+                comment,
+                getOptionsWithPrefix(
+                    options,
+                    "/edge/projects/:projectId/tasks/:taskId/comments",
+                ),
+            ),
+            fastify.register(
+                github,
+                getOptionsWithPrefix(options, "/edge/github"),
             ),
         ]);
     },

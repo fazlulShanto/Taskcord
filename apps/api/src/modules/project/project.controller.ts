@@ -155,6 +155,19 @@ export default class ProjectController {
 
         return reply.send({ invite });
     }
+
+    public async listProjectDefinedRoles(
+        request: FastifyRequest<{ Params: ProjectInviteParams }>,
+        reply: FastifyReply,
+    ) {
+        const { projectId } = request.params;
+        const roles = await this.projectService.listProjectDefinedRoles(
+            projectId,
+            request.jwtUser.id,
+        );
+
+        return reply.send({ roles });
+    }
 }
 
 // These are just for type checking in the controller
