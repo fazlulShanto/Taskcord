@@ -2,14 +2,18 @@
   "$schema": "https://schema.railpack.com",
   "steps": {
     "install": {
-      "commands": ["pnpm install"]
+      "commands": [
+        "ROOT=\"$PWD\"; while [ \"$ROOT\" != \"/\" ] && [ ! -f \"$ROOT/pnpm-workspace.yaml\" ]; do ROOT=\"$(dirname \"$ROOT\")\"; done; echo \"[api][install] start pwd=$(pwd)\"; echo \"[api][install] workspace root=$ROOT\"; [ -f \"$ROOT/pnpm-workspace.yaml\" ] || { echo \"[api][install] workspace root not found\"; exit 1; }; cd \"$ROOT\" && echo \"[api][install] run pwd=$(pwd)\" && corepack enable && corepack pnpm@10.12.1 install --frozen-lockfile"
+      ]
     },
     "build": {
       "inputs": [{ "step": "install" }],
-      "commands": ["pnpm run build"]
+      "commands": [
+        "ROOT=\"$PWD\"; while [ \"$ROOT\" != \"/\" ] && [ ! -f \"$ROOT/pnpm-workspace.yaml\" ]; do ROOT=\"$(dirname \"$ROOT\")\"; done; echo \"[api][build] start pwd=$(pwd)\"; echo \"[api][build] workspace root=$ROOT\"; [ -f \"$ROOT/pnpm-workspace.yaml\" ] || { echo \"[api][build] workspace root not found\"; exit 1; }; cd \"$ROOT\" && echo \"[api][build] run pwd=$(pwd)\" && corepack enable && corepack pnpm@10.12.1 --filter api run build"
+      ]
     }
   },
   "deploy": {
-    "startCommand": "node dist/index.js"
+    "startCommand": "ROOT=\"$PWD\"; while [ \"$ROOT\" != \"/\" ] && [ ! -f \"$ROOT/pnpm-workspace.yaml\" ]; do ROOT=\"$(dirname \"$ROOT\")\"; done; echo \"[api][start] start pwd=$(pwd)\"; echo \"[api][start] workspace root=$ROOT\"; [ -f \"$ROOT/pnpm-workspace.yaml\" ] || { echo \"[api][start] workspace root not found\"; exit 1; }; cd \"$ROOT\" && echo \"[api][start] run pwd=$(pwd)\" && corepack enable && corepack pnpm@10.12.1 --filter api run start"
   }
 }

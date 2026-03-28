@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "steps": {
+    "install": {
+      "commands": [
+        "ROOT=\"$PWD\"; while [ \"$ROOT\" != \"/\" ] && [ ! -f \"$ROOT/pnpm-workspace.yaml\" ]; do ROOT=\"$(dirname \"$ROOT\")\"; done; echo \"[bot][install] start pwd=$(pwd)\"; echo \"[bot][install] workspace root=$ROOT\"; [ -f \"$ROOT/pnpm-workspace.yaml\" ] || { echo \"[bot][install] workspace root not found\"; exit 1; }; cd \"$ROOT\" && echo \"[bot][install] run pwd=$(pwd)\" && corepack enable && corepack pnpm@10.12.1 install --frozen-lockfile"
+      ]
+    },
+    "build": {
+      "inputs": [{ "step": "install" }],
+      "commands": [
+        "ROOT=\"$PWD\"; while [ \"$ROOT\" != \"/\" ] && [ ! -f \"$ROOT/pnpm-workspace.yaml\" ]; do ROOT=\"$(dirname \"$ROOT\")\"; done; echo \"[bot][build] start pwd=$(pwd)\"; echo \"[bot][build] workspace root=$ROOT\"; [ -f \"$ROOT/pnpm-workspace.yaml\" ] || { echo \"[bot][build] workspace root not found\"; exit 1; }; cd \"$ROOT\" && echo \"[bot][build] run pwd=$(pwd)\" && corepack enable && corepack pnpm@10.12.1 --filter bot run build"
+      ]
+    }
+  },
+  "deploy": {
+    "startCommand": "ROOT=\"$PWD\"; while [ \"$ROOT\" != \"/\" ] && [ ! -f \"$ROOT/pnpm-workspace.yaml\" ]; do ROOT=\"$(dirname \"$ROOT\")\"; done; echo \"[bot][start] start pwd=$(pwd)\"; echo \"[bot][start] workspace root=$ROOT\"; [ -f \"$ROOT/pnpm-workspace.yaml\" ] || { echo \"[bot][start] workspace root not found\"; exit 1; }; cd \"$ROOT\" && echo \"[bot][start] run pwd=$(pwd)\" && corepack enable && corepack pnpm@10.12.1 --filter bot run start"
+  }
+}
